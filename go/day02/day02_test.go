@@ -85,3 +85,47 @@ func TestGamePossible(t *testing.T) {
 		t.Errorf("expected sum %d, got %d", expectedSumPossibleIds, sumPossibleIds)
 	}
 }
+
+func TestMinimumGamePossible(t *testing.T) {
+	testCases := []utils.TestCase[string, CubesSubset]{
+		{
+			Case: "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green",
+			Expected: CubesSubset{
+				Red: 4, Green: 2, Blue: 6,
+			},
+		},
+		{
+			Case: "Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue",
+			Expected: CubesSubset{
+				Red: 1, Green: 3, Blue: 4,
+			},
+		},
+		{
+			Case: "Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red",
+			Expected: CubesSubset{
+				Red: 20, Green: 13, Blue: 6,
+			},
+		},
+		{
+			Case: "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red",
+			Expected: CubesSubset{
+				Red: 14, Green: 3, Blue: 15,
+			},
+		},
+		{
+			Case: "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green",
+			Expected: CubesSubset{
+				Red: 6, Green: 3, Blue: 2,
+			},
+		},
+	}
+	for _, testCase := range testCases {
+		t.Run(testCase.Case, func(t *testing.T) {
+			game := parseGame(testCase.Case)
+			result := game.GetMinimumSubset()
+			if !reflect.DeepEqual(result, testCase.Expected) {
+				t.Errorf("expected %+v, got %+v", testCase.Expected, result)
+			}
+		})
+	}
+}

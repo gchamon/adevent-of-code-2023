@@ -73,3 +73,7 @@ func (g CubeGame) IsPossible() bool {
 	}
 	return true
 }
+
+func (g CubeGame) GetMinimumSubset() CubesSubset {
+	return CubesSubset{}
+}
