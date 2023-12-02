@@ -52,17 +52,23 @@ func TestGetCalibrationValue(t *testing.T) {
 func TestReplaceSubstringNumbers(t *testing.T) {
 	testCases := []utils.TestCase[string, string]{
 		{Case: "two1nine", Expected: "219"},
-		{Case: "eightwothree", Expected: "8wo3"},
+		{Case: "eightwothree", Expected: "823"},
 		{Case: "abcone2threexyz", Expected: "abc123xyz"},
-		{Case: "xtwone3four", Expected: "x2ne34"},
+		{Case: "xtwone3four", Expected: "x2134"},
 		{Case: "4nineeightseven2", Expected: "49872"},
-		{Case: "zoneight234", Expected: "z1ight234"},
+		{Case: "zoneight234", Expected: "z18234"},
 		{Case: "7pqrstsixteen", Expected: "7pqrst6teen"},
 		{Case: "8one2three", Expected: "8123"},
 		{Case: "8one2thress", Expected: "812thress"},
 		{Case: "8one2thr", Expected: "812thr"},
 		{Case: "on8one2th", Expected: "on812th"},
 		{Case: "8one2t", Expected: "812t"},
+		{Case: "8one2o", Expected: "812o"},
+		{Case: "8one2on", Expected: "812on"},
+		{Case: "8one2one", Expected: "8121"},
+		{Case: "87gfmklvnzfz4594qlksr5", Expected: "87gfmklvnzfz4594qlksr5"},
+		{Case: "41seven", Expected: "417"},
+		{Case: "bcplhrpvmkxkjxlzl7zkbpdnoneninethreej", Expected: "bcplhrpvmkxkjxlzl7zkbpdn193j"},
 	}
 
 	for _, testCase := range testCases {
@@ -84,6 +90,7 @@ func TestCalibrationWithNumbersReplacement(t *testing.T) {
 		{Case: "4nineeightseven2", Expected: 42},
 		{Case: "zoneight234", Expected: 14},
 		{Case: "7pqrstsixteen", Expected: 76},
+		{Case: "fzrpfhbfvj6dbxbtfs7twofksfbshrzkdeightwoqg", Expected: 62},
 	}
 
 	for _, testCase := range testCases {

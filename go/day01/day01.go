@@ -16,34 +16,33 @@ func main() {
 	fmt.Println("Day 1")
 	fmt.Println("first part:")
 	input := utils.Reader(2023, 01)
-	calibrationValues := []int{}
+	sumCalibrationValues := 0
 	stringsList := strings.Split(input, "\n")
 	for _, line := range stringsList {
 		if line != "" {
 			if calibrationValue, err := getCalibrationValue(line); err == nil {
-				calibrationValues = append(calibrationValues, calibrationValue)
+				sumCalibrationValues += calibrationValue
 			} else {
 				log.Fatalf("error processing %s: %s", line, err)
 			}
 		}
 	}
-	fmt.Println(sumListOfInt(calibrationValues))
+	fmt.Println(sumCalibrationValues)
 
 	fmt.Println("second part:")
-	calibrationValues = []int{}
-	fmt.Println(calibrationValues)
+	sumCalibrationValues = 0
 	for _, line := range stringsList {
 		if line != "" {
 			replacedLine := replaceSubstringNumbers(line)
 			if calibrationValue, err := getCalibrationValue(replacedLine); err == nil {
-				fmt.Printf("%s: %s %d\n", line, replacedLine, calibrationValue)
-				calibrationValues = append(calibrationValues, calibrationValue)
+				fmt.Println(line, calibrationValue)
+				sumCalibrationValues += calibrationValue
 			} else {
 				log.Fatalf("error processing %s: %s", line, err)
 			}
 		}
 	}
-	fmt.Println(sumListOfInt(calibrationValues))
+	fmt.Println(sumCalibrationValues)
 }
 
 func replaceSubstringNumbers(line string) string {
@@ -68,12 +67,26 @@ func replaceSubstringNumbers(line string) string {
 			windowSubstring := string(runes[0:j])
 			if number, ok := numbers[windowSubstring]; ok {
 				resultRunes = append(resultRunes, number)
-				runes = runes[j:]
+				runes = runes[j-1:]
 				pushRune = false
 				break
 			}
 		}
-		if pushRune == true {
+		if pushRune == false {
+			tailNumber := false
+			for j := minWindowSize; j <= int(min(maxWindowSize, len(runes))); j++ {
+				windowSubstring := string(runes[0:j])
+				if number, ok := numbers[windowSubstring]; ok {
+					resultRunes = append(resultRunes, number)
+					runes = runes[j:]
+					tailNumber = true
+					break
+				}
+			}
+			if tailNumber == false {
+				runes = runes[1:]
+			}
+		} else {
 			resultRunes = append(resultRunes, runes[0])
 			runes = runes[1:]
 		}
