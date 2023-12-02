@@ -164,12 +164,18 @@ func TestCalulatePower(t *testing.T) {
 			Expected: 36,
 		},
 	}
+	expectedTotalPowerSum := 2286
+	totalPowerSum := 0
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
 			result := testCase.Case.CalculatePower()
 			if result != testCase.Expected {
 				t.Errorf("expected %d, got %d", testCase.Expected, result)
 			}
+			totalPowerSum += result
 		})
+	}
+	if totalPowerSum != expectedTotalPowerSum {
+		t.Errorf("expected total sum %d, got %d", expectedTotalPowerSum, totalPowerSum)
 	}
 }
