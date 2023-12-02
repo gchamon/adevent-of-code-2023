@@ -1,6 +1,8 @@
 package main
 
 import (
+	"adventOfCode/utils"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -15,6 +17,22 @@ type CubesSubset struct {
 type CubeGame struct {
 	Id           int
 	CubesSubsets []CubesSubset
+}
+
+func main() {
+	fmt.Println("Day 2")
+	fmt.Println("first part:")
+	input := utils.Reader(2023, 02)
+	sumPossibleIds := 0
+	for _, line := range strings.Split(input, "\n") {
+		if line != "" {
+			game := parseGame(line)
+			if isGamePossible(game) {
+				sumPossibleIds += game.Id
+			}
+		}
+	}
+	fmt.Println(sumPossibleIds)
 }
 
 func parseGame(input string) CubeGame {
@@ -43,4 +61,17 @@ func parseGame(input string) CubeGame {
 	}
 
 	return cubeGame
+}
+
+func isGamePossible(game CubeGame) bool {
+	MaxCubeSubset := CubesSubset{
+		Red: 12, Green: 13, Blue: 14,
+	}
+
+	for _, subset := range game.CubesSubsets {
+		if subset.Red > MaxCubeSubset.Red || subset.Green > MaxCubeSubset.Green || subset.Blue > MaxCubeSubset.Blue {
+			return false
+		}
+	}
+	return true
 }
