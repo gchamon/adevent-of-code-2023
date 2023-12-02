@@ -104,3 +104,43 @@ func TestCalibrationWithNumbersReplacement(t *testing.T) {
 		})
 	}
 }
+
+type ReplacementExpected struct {
+	Replacement rune
+	Length      int
+}
+
+func TestGetNumberReplacement(t *testing.T) {
+	testCases := []utils.TestCase[string, ReplacementExpected]{
+		{Case: "one", Expected: ReplacementExpected{Replacement: '1', Length: 3}},
+		{Case: "onexyz", Expected: ReplacementExpected{Replacement: '1', Length: 3}},
+		{Case: "twoxyz", Expected: ReplacementExpected{Replacement: '2', Length: 3}},
+		{Case: "threexyz", Expected: ReplacementExpected{Replacement: '3', Length: 5}},
+		{Case: "three", Expected: ReplacementExpected{Replacement: '3', Length: 5}},
+		{Case: "fourxyz", Expected: ReplacementExpected{Replacement: '4', Length: 4}},
+		{Case: "fivexyz", Expected: ReplacementExpected{Replacement: '5', Length: 4}},
+		{Case: "sixxyz", Expected: ReplacementExpected{Replacement: '6', Length: 3}},
+		{Case: "sevenxyz", Expected: ReplacementExpected{Replacement: '7', Length: 5}},
+		{Case: "eightxyz", Expected: ReplacementExpected{Replacement: '8', Length: 5}},
+		{Case: "ninexyz", Expected: ReplacementExpected{Replacement: '9', Length: 4}},
+		{Case: "nine", Expected: ReplacementExpected{Replacement: '9', Length: 4}},
+		{Case: "ninea", Expected: ReplacementExpected{Replacement: '9', Length: 4}},
+		{Case: "nineab", Expected: ReplacementExpected{Replacement: '9', Length: 4}},
+		{Case: "nineabc", Expected: ReplacementExpected{Replacement: '9', Length: 4}},
+		{Case: "nineabcd", Expected: ReplacementExpected{Replacement: '9', Length: 4}},
+		{Case: "nineabcde", Expected: ReplacementExpected{Replacement: '9', Length: 4}},
+		{Case: "nineabcdef", Expected: ReplacementExpected{Replacement: '9', Length: 4}},
+	}
+
+	for _, testCase := range testCases {
+		expectedLength := testCase.Expected.Length
+		expectedReplacement := testCase.Expected.Replacement
+		t.Run(testCase.Case, func(t *testing.T) {
+			if replacement, length := getNumberReplacement(testCase.Case); length == 0 {
+				t.Errorf("expected length %d got %d", expectedLength, length)
+			} else if replacement != expectedReplacement {
+				t.Errorf("expected %v got %v", expectedReplacement, replacement)
+			}
+		})
+	}
+}

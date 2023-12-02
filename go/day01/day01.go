@@ -118,3 +118,30 @@ func getFirstDigit(line string) (int, error) {
 	}
 	return 0, NoDigitFound
 }
+
+func getNumberReplacement(input string) (replacement rune, length int) {
+	replacement, length = 0, 0
+	runes := []rune(input)
+	numbers := map[string]rune{
+		"one":   '1',
+		"two":   '2',
+		"three": '3',
+		"four":  '4',
+		"five":  '5',
+		"six":   '6',
+		"seven": '7',
+		"eight": '8',
+		"nine":  '9',
+	}
+	minWindowSize := 3
+	maxWindowSize := 5
+	for j := minWindowSize; j <= min(maxWindowSize, len(runes)); j++ {
+		windowSubstring := string(runes[0:j])
+		if number, ok := numbers[windowSubstring]; ok {
+			replacement, length = number, j
+			break
+		}
+	}
+
+	return
+}
