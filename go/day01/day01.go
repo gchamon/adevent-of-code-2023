@@ -17,7 +17,8 @@ func main() {
 	fmt.Println("first part:")
 	input := utils.Reader(2023, 01)
 	calibrationValues := []int{}
-	for _, line := range strings.Split(input, "\n") {
+	stringsList := strings.Split(input, "\n")
+	for _, line := range stringsList {
 		if line != "" {
 			if calibrationValue, err := getCalibrationValue(line); err == nil {
 				calibrationValues = append(calibrationValues, calibrationValue)
@@ -26,7 +27,23 @@ func main() {
 			}
 		}
 	}
-	fmt.Println(sum(calibrationValues))
+	fmt.Println(sumListOfInt(calibrationValues))
+
+	fmt.Println("second part:")
+	calibrationValues = []int{}
+	fmt.Println(calibrationValues)
+	for _, line := range stringsList {
+		if line != "" {
+			replacedLine := replaceSubstringNumbers(line)
+			if calibrationValue, err := getCalibrationValue(replacedLine); err == nil {
+				fmt.Printf("%s: %s %d\n", line, replacedLine, calibrationValue)
+				calibrationValues = append(calibrationValues, calibrationValue)
+			} else {
+				log.Fatalf("error processing %s: %s", line, err)
+			}
+		}
+	}
+	fmt.Println(sumListOfInt(calibrationValues))
 }
 
 func replaceSubstringNumbers(line string) string {
@@ -68,7 +85,7 @@ func replaceSubstringNumbers(line string) string {
 	return string(resultRunes)
 }
 
-func sum(array []int) int {
+func sumListOfInt(array []int) int {
 	sum := 0
 	for _, n := range array {
 		sum += n

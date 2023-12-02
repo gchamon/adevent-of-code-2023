@@ -58,6 +58,11 @@ func TestReplaceSubstringNumbers(t *testing.T) {
 		{Case: "4nineeightseven2", Expected: "49872"},
 		{Case: "zoneight234", Expected: "z1ight234"},
 		{Case: "7pqrstsixteen", Expected: "7pqrst6teen"},
+		{Case: "8one2three", Expected: "8123"},
+		{Case: "8one2thress", Expected: "812thress"},
+		{Case: "8one2thr", Expected: "812thr"},
+		{Case: "on8one2th", Expected: "on812th"},
+		{Case: "8one2t", Expected: "812t"},
 	}
 
 	for _, testCase := range testCases {
@@ -90,5 +95,14 @@ func TestCalibrationWithNumbersReplacement(t *testing.T) {
 				t.Errorf("got %d expected %d", result, testCase.Expected)
 			}
 		})
+	}
+}
+
+func TestSum(t *testing.T) {
+	numbers := []int{29, 83, 13, 24, 42, 14, 76}
+	expected := 281
+	result := sumListOfInt(numbers)
+	if result != expected {
+		t.Errorf("expected %d got %d", expected, result)
 	}
 }
