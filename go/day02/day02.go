@@ -74,6 +74,17 @@ func (g CubeGame) IsPossible() bool {
 	return true
 }
 
-func (g CubeGame) GetMinimumSubset() CubesSubset {
-	return CubesSubset{}
+func (g CubeGame) GetMinimumSubset() (minimumGamePossible CubesSubset) {
+	for _, subset := range g.CubesSubsets {
+		if subset.Red > minimumGamePossible.Red {
+			minimumGamePossible.Red = subset.Red
+		}
+		if subset.Green > minimumGamePossible.Green {
+			minimumGamePossible.Green = subset.Green
+		}
+		if subset.Blue > minimumGamePossible.Blue {
+			minimumGamePossible.Blue = subset.Blue
+		}
+	}
+	return
 }
