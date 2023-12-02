@@ -45,51 +45,22 @@ func main() {
 }
 
 func replaceSubstringNumbers(line string) string {
-	numbers := map[string]rune{
-		"one":   '1',
-		"two":   '2',
-		"three": '3',
-		"four":  '4',
-		"five":  '5',
-		"six":   '6',
-		"seven": '7',
-		"eight": '8',
-		"nine":  '9',
-	}
 	runes := []rune(line)
 	resultRunes := []rune{}
-	minWindowSize := 3
-	maxWindowSize := 5
 	for len(runes) > 0 {
 		pushRune := true
-		for j := minWindowSize; j <= int(min(maxWindowSize, len(runes))); j++ {
-			windowSubstring := string(runes[0:j])
-			if number, ok := numbers[windowSubstring]; ok {
-				resultRunes = append(resultRunes, number)
-				runes = runes[j-1:]
-				pushRune = false
-				break
-			}
+		replacement, length := getNumberReplacement(runes)
+		for length > 0 {
+			runes = runes[length-1:]
+			resultRunes = append(resultRunes, replacement)
+			replacement, length = getNumberReplacement(runes)
+			pushRune = false
 		}
-		if pushRune == false {
-			tailNumber := false
-			for j := minWindowSize; j <= int(min(maxWindowSize, len(runes))); j++ {
-				windowSubstring := string(runes[0:j])
-				if number, ok := numbers[windowSubstring]; ok {
-					resultRunes = append(resultRunes, number)
-					runes = runes[j:]
-					tailNumber = true
-					break
-				}
-			}
-			if tailNumber == false {
-				runes = runes[1:]
-			}
-		} else {
+		if pushRune == true {
 			resultRunes = append(resultRunes, runes[0])
-			runes = runes[1:]
 		}
-		if len(runes) < minWindowSize {
+		runes = runes[1:]
+		if len(runes) < 3 {
 			resultRunes = append(resultRunes, runes...)
 			runes = []rune{}
 		}
@@ -119,7 +90,7 @@ func getFirstDigit(line string) (int, error) {
 	return 0, NoDigitFound
 }
 
-func getNumberReplacement(input string) (replacement rune, length int) {
+func getNumberReplacement(input []rune) (replacement rune, length int) {
 	replacement, length = 0, 0
 	runes := []rune(input)
 	numbers := map[string]rune{

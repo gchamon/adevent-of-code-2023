@@ -52,6 +52,7 @@ func TestGetCalibrationValue(t *testing.T) {
 func TestReplaceSubstringNumbers(t *testing.T) {
 	testCases := []utils.TestCase[string, string]{
 		{Case: "two1nine", Expected: "219"},
+		{Case: "sevenineight", Expected: "798"},
 		{Case: "eightwothree", Expected: "823"},
 		{Case: "abcone2threexyz", Expected: "abc123xyz"},
 		{Case: "xtwone3four", Expected: "x2134"},
@@ -136,7 +137,7 @@ func TestGetNumberReplacement(t *testing.T) {
 		expectedLength := testCase.Expected.Length
 		expectedReplacement := testCase.Expected.Replacement
 		t.Run(testCase.Case, func(t *testing.T) {
-			if replacement, length := getNumberReplacement(testCase.Case); length == 0 {
+			if replacement, length := getNumberReplacement([]rune(testCase.Case)); length == 0 {
 				t.Errorf("expected length %d got %d", expectedLength, length)
 			} else if replacement != expectedReplacement {
 				t.Errorf("expected %v got %v", expectedReplacement, replacement)
