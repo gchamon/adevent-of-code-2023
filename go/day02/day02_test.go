@@ -72,7 +72,7 @@ func TestGamePossible(t *testing.T) {
 	for _, testCase := range testCases {
 		t.Run(testCase.Case, func(t *testing.T) {
 			game := parseGame(testCase.Case)
-			result := isGamePossible(game)
+			result := game.IsPossible()
 			if result != testCase.Expected {
 				t.Errorf("expected %t, got %t", testCase.Expected, result)
 			}

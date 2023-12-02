@@ -26,7 +26,7 @@ func main() {
 	sumPossibleIds := 0
 	for _, line := range strings.Split(input, "\n") {
 		game := parseGame(line)
-		if isGamePossible(game) {
+		if game.IsPossible() {
 			sumPossibleIds += game.Id
 		}
 	}
@@ -61,12 +61,12 @@ func parseGame(input string) CubeGame {
 	return cubeGame
 }
 
-func isGamePossible(game CubeGame) bool {
+func (g CubeGame) IsPossible() bool {
 	MaxCubeSubset := CubesSubset{
 		Red: 12, Green: 13, Blue: 14,
 	}
 
-	for _, subset := range game.CubesSubsets {
+	for _, subset := range g.CubesSubsets {
 		if subset.Red > MaxCubeSubset.Red || subset.Green > MaxCubeSubset.Green || subset.Blue > MaxCubeSubset.Blue {
 			return false
 		}
