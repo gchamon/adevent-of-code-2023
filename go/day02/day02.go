@@ -24,13 +24,23 @@ func main() {
 	fmt.Println("first part:")
 	input := utils.Reader(2023, 02)
 	sumPossibleIds := 0
+	games := []CubeGame{}
 	for _, line := range strings.Split(input, "\n") {
 		game := parseGame(line)
 		if game.IsPossible() {
 			sumPossibleIds += game.Id
 		}
+		games = append(games, game)
 	}
 	fmt.Println(sumPossibleIds)
+
+	fmt.Println("second part:")
+	totalPower := 0
+	for _, game := range games {
+		minimumSubset := game.GetMinimumSubset()
+		totalPower += minimumSubset.CalculatePower()
+	}
+	fmt.Println(totalPower)
 }
 
 func parseGame(input string) CubeGame {
