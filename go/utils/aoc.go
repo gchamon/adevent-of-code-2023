@@ -7,6 +7,8 @@ import (
 	"math"
 	"net/http"
 	"os"
+	"path"
+	"strconv"
 	"time"
 )
 
@@ -46,4 +48,12 @@ func GetAvailableDays(year int) int {
 	availableDays := int(math.Min(math.Ceil(diff.Hours()/24), 24))
 
 	return availableDays
+}
+
+func GetInputFileName(year, day int) string {
+	curPath, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Error getting current working dir: %s", err)
+	}
+	return path.Join(curPath, "../inputs", strconv.Itoa(year), fmt.Sprintf("%02d", day), "input.txt")
 }

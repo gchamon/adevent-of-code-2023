@@ -3,11 +3,79 @@ package main
 import (
 	"adventOfCode/utils"
 	"errors"
+	"fmt"
+	"log"
 	"strconv"
+	"strings"
 	"unicode"
 )
 
 var NoDigitFound = errors.New("unable to find a digit in provided string")
+
+func main() {
+	fmt.Println("Day 1")
+	fmt.Println("first part:")
+	input := utils.Reader(2023, 01)
+	calibrationValues := []int{}
+	for _, line := range strings.Split(input, "\n") {
+		if line != "" {
+			if calibrationValue, err := getCalibrationValue(line); err == nil {
+				calibrationValues = append(calibrationValues, calibrationValue)
+			} else {
+				log.Fatalf("error processing %s: %s", line, err)
+			}
+		}
+	}
+	fmt.Println(sum(calibrationValues))
+}
+
+func replaceSubstringNumbers(line string) string {
+	numbers := map[string]rune{
+		"one":   '1',
+		"two":   '2',
+		"three": '3',
+		"four":  '4',
+		"five":  '5',
+		"six":   '6',
+		"seven": '7',
+		"eight": '8',
+		"nine":  '9',
+	}
+	runes := []rune(line)
+	resultRunes := []rune{}
+	minWindowSize := 3
+	maxWindowSize := 5
+	for len(runes) > 0 {
+		pushRune := true
+		for j := minWindowSize; j <= int(min(maxWindowSize, len(runes))); j++ {
+			windowSubstring := string(runes[0:j])
+			if number, ok := numbers[windowSubstring]; ok {
+				resultRunes = append(resultRunes, number)
+				runes = runes[j:]
+				pushRune = false
+				break
+			}
+		}
+		if pushRune == true {
+			resultRunes = append(resultRunes, runes[0])
+			runes = runes[1:]
+		}
+		if len(runes) < minWindowSize {
+			resultRunes = append(resultRunes, runes...)
+			runes = []rune{}
+		}
+	}
+	return string(resultRunes)
+}
+
+func sum(array []int) int {
+	sum := 0
+	for _, n := range array {
+		sum += n
+	}
+
+	return sum
+}
 
 func getCalibrationValue(line string) (int, error) {
 	firstDigit, err := getFirstDigit(line)

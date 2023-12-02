@@ -48,3 +48,47 @@ func TestGetCalibrationValue(t *testing.T) {
 		})
 	}
 }
+
+func TestReplaceSubstringNumbers(t *testing.T) {
+	testCases := []utils.TestCase[string, string]{
+		{Case: "two1nine", Expected: "219"},
+		{Case: "eightwothree", Expected: "8wo3"},
+		{Case: "abcone2threexyz", Expected: "abc123xyz"},
+		{Case: "xtwone3four", Expected: "x2ne34"},
+		{Case: "4nineeightseven2", Expected: "49872"},
+		{Case: "zoneight234", Expected: "z1ight234"},
+		{Case: "7pqrstsixteen", Expected: "7pqrst6teen"},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.Case, func(t *testing.T) {
+			result := replaceSubstringNumbers(testCase.Case)
+			if result != testCase.Expected {
+				t.Errorf("expected %s got %s", testCase.Expected, result)
+			}
+		})
+	}
+}
+
+func TestCalibrationWithNumbersReplacement(t *testing.T) {
+	testCases := []utils.TestCase[string, int]{
+		{Case: "two1nine", Expected: 29},
+		{Case: "eightwothree", Expected: 83},
+		{Case: "abcone2threexyz", Expected: 13},
+		{Case: "xtwone3four", Expected: 24},
+		{Case: "4nineeightseven2", Expected: 42},
+		{Case: "zoneight234", Expected: 14},
+		{Case: "7pqrstsixteen", Expected: 76},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.Case, func(t *testing.T) {
+			caseReplaced := replaceSubstringNumbers(testCase.Case)
+			if result, err := getCalibrationValue(caseReplaced); err != nil {
+				t.Errorf("got error %s", err)
+			} else if result != testCase.Expected {
+				t.Errorf("got %d expected %d", result, testCase.Expected)
+			}
+		})
+	}
+}
