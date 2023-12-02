@@ -90,5 +90,5 @@ func (g CubeGame) GetMinimumSubset() (minimumGamePossible CubesSubset) {
 }
 
 func (s CubesSubset) CalculatePower() int {
-	return 0
+	return s.Blue * s.Green * s.Red
 }
