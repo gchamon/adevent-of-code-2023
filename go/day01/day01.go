@@ -52,7 +52,7 @@ func replaceSubstringNumbers(line string) string {
 		replacement, length := getNumberReplacement(runes)
 		for length > 0 { // while there are replacements...
 			runes = runes[length-1:]                          // pop the first `length`-most chars but the last
-			resultRunes = append(resultRunes, replacement)    // and add to the resulting stack
+			resultRunes = append(resultRunes, replacement)    // and add the replacement to the resulting stack
 			replacement, length = getNumberReplacement(runes) // and try again
 			pushRune = false                                  // in case there are replacements, the first char in the window won't be added to the resulting stack
 		}
