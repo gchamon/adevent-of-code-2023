@@ -9,6 +9,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -35,6 +36,16 @@ func GetAOCInput(year, day int) []byte {
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		log.Fatalf("error reading response body: %s", err)
+	}
+	if res.StatusCode != 200 {
+		resLog := struct {
+			Code int
+			Body string
+		}{
+			Code: res.StatusCode,
+			Body: strings.TrimSpace(string(body)),
+		}
+		log.Fatalf("Unable to get year %d, day %d: %+v", year, day, resLog)
 	}
 
 	return body
