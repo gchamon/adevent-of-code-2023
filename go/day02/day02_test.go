@@ -2,6 +2,7 @@ package main
 
 import (
 	"adventOfCode/utils"
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -125,6 +126,49 @@ func TestMinimumGamePossible(t *testing.T) {
 			result := game.GetMinimumSubset()
 			if !reflect.DeepEqual(result, testCase.Expected) {
 				t.Errorf("expected %+v, got %+v", testCase.Expected, result)
+			}
+		})
+	}
+}
+
+func TestCalulatePower(t *testing.T) {
+	testCases := []utils.TestCase[CubesSubset, int]{
+		{
+			Case: CubesSubset{
+				Red: 4, Green: 2, Blue: 6,
+			},
+			Expected: 48,
+		},
+		{
+			Case: CubesSubset{
+				Red: 1, Green: 3, Blue: 4,
+			},
+			Expected: 12,
+		},
+		{
+			Case: CubesSubset{
+				Red: 20, Green: 13, Blue: 6,
+			},
+			Expected: 1560,
+		},
+		{
+			Case: CubesSubset{
+				Red: 14, Green: 3, Blue: 15,
+			},
+			Expected: 630,
+		},
+		{
+			Case: CubesSubset{
+				Red: 6, Green: 3, Blue: 2,
+			},
+			Expected: 36,
+		},
+	}
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
+			result := testCase.Case.CalculatePower()
+			if result != testCase.Expected {
+				t.Errorf("expected %d, got %d", testCase.Expected, result)
 			}
 		})
 	}

@@ -88,3 +88,7 @@ func (g CubeGame) GetMinimumSubset() (minimumGamePossible CubesSubset) {
 	}
 	return
 }
+
+func (s CubesSubset) CalculatePower() int {
+	return 0
+}
