@@ -104,12 +104,3 @@ func TestCalibrationWithNumbersReplacement(t *testing.T) {
 		})
 	}
 }
-
-func TestSum(t *testing.T) {
-	numbers := []int{29, 83, 13, 24, 42, 14, 76}
-	expected := 281
-	result := sumListOfInt(numbers)
-	if result != expected {
-		t.Errorf("expected %d got %d", expected, result)
-	}
-}

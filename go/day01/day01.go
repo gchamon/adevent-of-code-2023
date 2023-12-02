@@ -35,7 +35,6 @@ func main() {
 		if line != "" {
 			replacedLine := replaceSubstringNumbers(line)
 			if calibrationValue, err := getCalibrationValue(replacedLine); err == nil {
-				fmt.Println(line, calibrationValue)
 				sumCalibrationValues += calibrationValue
 			} else {
 				log.Fatalf("error processing %s: %s", line, err)
@@ -96,15 +95,6 @@ func replaceSubstringNumbers(line string) string {
 		}
 	}
 	return string(resultRunes)
-}
-
-func sumListOfInt(array []int) int {
-	sum := 0
-	for _, n := range array {
-		sum += n
-	}
-
-	return sum
 }
 
 func getCalibrationValue(line string) (int, error) {
