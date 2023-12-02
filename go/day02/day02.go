@@ -25,11 +25,9 @@ func main() {
 	input := utils.Reader(2023, 02)
 	sumPossibleIds := 0
 	for _, line := range strings.Split(input, "\n") {
-		if line != "" {
-			game := parseGame(line)
-			if isGamePossible(game) {
-				sumPossibleIds += game.Id
-			}
+		game := parseGame(line)
+		if isGamePossible(game) {
+			sumPossibleIds += game.Id
 		}
 	}
 	fmt.Println(sumPossibleIds)

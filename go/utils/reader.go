@@ -1,6 +1,9 @@
 package utils
 
-import "os"
+import (
+	"os"
+	"strings"
+)
 
 func Reader(year, day int) string {
 	fileName := GetInputFileName(year, day)
@@ -10,5 +13,5 @@ func Reader(year, day int) string {
 		panic(err)
 	}
 
-	return string(content)
+	return strings.TrimSpace(string(content))
 }

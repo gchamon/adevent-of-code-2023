@@ -19,12 +19,10 @@ func main() {
 	sumCalibrationValues := 0
 	stringsList := strings.Split(input, "\n")
 	for _, line := range stringsList {
-		if line != "" {
-			if calibrationValue, err := getCalibrationValue(line); err == nil {
-				sumCalibrationValues += calibrationValue
-			} else {
-				log.Fatalf("error processing %s: %s", line, err)
-			}
+		if calibrationValue, err := getCalibrationValue(line); err == nil {
+			sumCalibrationValues += calibrationValue
+		} else {
+			log.Fatalf("error processing %s: %s", line, err)
 		}
 	}
 	fmt.Println(sumCalibrationValues)
@@ -32,13 +30,11 @@ func main() {
 	fmt.Println("second part:")
 	sumCalibrationValues = 0
 	for _, line := range stringsList {
-		if line != "" {
-			replacedLine := replaceSubstringNumbers(line)
-			if calibrationValue, err := getCalibrationValue(replacedLine); err == nil {
-				sumCalibrationValues += calibrationValue
-			} else {
-				log.Fatalf("error processing %s: %s", line, err)
-			}
+		replacedLine := replaceSubstringNumbers(line)
+		if calibrationValue, err := getCalibrationValue(replacedLine); err == nil {
+			sumCalibrationValues += calibrationValue
+		} else {
+			log.Fatalf("error processing %s: %s", line, err)
 		}
 	}
 	fmt.Println(sumCalibrationValues)
