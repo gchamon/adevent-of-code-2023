@@ -50,19 +50,19 @@ func replaceSubstringNumbers(line string) string {
 	for len(runes) > 0 {
 		pushRune := true
 		replacement, length := getNumberReplacement(runes)
-		for length > 0 {
-			runes = runes[length-1:]
-			resultRunes = append(resultRunes, replacement)
-			replacement, length = getNumberReplacement(runes)
-			pushRune = false
+		for length > 0 { // while there are replacements...
+			runes = runes[length-1:]                          // pop the first `length`-most chars but the last
+			resultRunes = append(resultRunes, replacement)    // and add to the resulting stack
+			replacement, length = getNumberReplacement(runes) // and try again
+			pushRune = false                                  // in case there are replacements, the first char in the window won't be added to the resulting stack
 		}
-		if pushRune == true {
+		if pushRune == true { // in case no replacement is found add the current rune to the resulting stack
 			resultRunes = append(resultRunes, runes[0])
 		}
-		runes = runes[1:]
-		if len(runes) < 3 {
+		runes = runes[1:]   // and finally pop the first item from the search stack
+		if len(runes) < 3 { // in case there are only 2 or less runes, there can't be any more replacements, and we add the rest to the resulting stack
 			resultRunes = append(resultRunes, runes...)
-			runes = []rune{}
+			runes = []rune{} // clear the search stack so that the for exists. Could be done with a break and an empty for, but I think this is more readable
 		}
 	}
 	return string(resultRunes)
