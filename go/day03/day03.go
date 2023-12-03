@@ -104,16 +104,16 @@ func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 	}
 	newSchematicNumberWithAdjacentSymbols := func() (number SchematicNumber) {
 		number = NewSchematicNumber(currentValue)
-		getSymbolIfPossible := func(cx, cy int) {
+		addSymbolIfPossible := func(cx, cy int) {
 			if symbol, err := s.GetSymbol(cx, cy); err == nil {
 				number.AdjacentSymbols[string(symbol)] = true
 			}
 		}
-		getSymbolIfPossible(x, y)                // symbol in front of number
-		getSymbolIfPossible(x-numberLength-1, y) // symbol behind number
+		addSymbolIfPossible(x, y)                // symbol in front of number
+		addSymbolIfPossible(x-numberLength-1, y) // symbol behind number
 		for i := x - numberLength - 1; i <= x; i++ {
-			getSymbolIfPossible(i, y-1) // symbols in the row on top of number
-			getSymbolIfPossible(i, y+1) // symbols in the row under the bumber
+			addSymbolIfPossible(i, y-1) // symbols in the row on top of number
+			addSymbolIfPossible(i, y+1) // symbols in the row under the bumber
 		}
 		return
 	}
