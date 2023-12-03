@@ -17,7 +17,7 @@ func main() {
 	partNumbersSum := sumPartNumbers(schematicNumbers)
 	fmt.Println(partNumbersSum)
 	fmt.Println("second part:")
-	fmt.Printf("%+v", gearCandidates)
+	fmt.Printf("%d\n", gearCandidates.SumAllGearRatios())
 }
 
 type SchematicNumber struct {
