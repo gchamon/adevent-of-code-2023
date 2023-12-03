@@ -246,14 +246,8 @@ func TestIsPartNumber(t *testing.T) {
 
 func TestPartNumbersSum(t *testing.T) {
 	expectedPartNumbersSum := 4361
-	partNumbersSum := 0
+	partNumbersSum := sumPartNumbers(testInput.GetSchematicNumbers())
 
-	schematicNumbers := testInput.GetSchematicNumbers()
-	for _, schematicNumber := range schematicNumbers {
-		if schematicNumber.IsPartNumber() {
-			partNumbersSum += schematicNumber.Value
-		}
-	}
 	if expectedPartNumbersSum != partNumbersSum {
 		t.Errorf("expected %d, got %d", expectedPartNumbersSum, partNumbersSum)
 	}

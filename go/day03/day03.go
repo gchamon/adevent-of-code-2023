@@ -1,10 +1,23 @@
 package main
 
 import (
+	"adventOfCode/utils"
 	"errors"
+	"fmt"
 	"sort"
 	"strconv"
 )
+
+func main() {
+	fmt.Println("Day 3")
+	fmt.Println("first part:")
+	input := utils.Reader(2023, 03)
+	schematic := NewSchematic(input)
+	schematicNumbers := schematic.GetSchematicNumbers()
+	partNumbersSum := sumPartNumbers(schematicNumbers)
+	fmt.Println(partNumbersSum)
+
+}
 
 type SchematicNumber struct {
 	Value           int
@@ -127,4 +140,13 @@ func (n SchematicNumber) IsPartNumber() bool {
 		}
 	}
 	return false
+}
+
+func sumPartNumbers(schematicNumbers []SchematicNumber) (partNumbersSum int) {
+	for _, schematicNumber := range schematicNumbers {
+		if schematicNumber.IsPartNumber() {
+			partNumbersSum += schematicNumber.Value
+		}
+	}
+	return
 }
