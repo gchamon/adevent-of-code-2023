@@ -75,9 +75,12 @@ func NewSchematicNumber(value int) (s SchematicNumber) {
 
 func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 	numbers := []SchematicNumber{}
-	curValue := 0
+	currentValue := 0
 	numberLength := 0
 
+	// while the schematic contents is a single string, it is
+	// useful to maintain logical coordinates to symbols in order to
+	// map adjacent symbols
 	x, y := 0, 0
 	incrementCoordinates := func(c rune) {
 		if c == rune('\n') {
@@ -86,26 +89,30 @@ func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 			x++
 		}
 	}
+	newSchematicNumberWithAdjacentSymbols := func() (number SchematicNumber) {
+		number = NewSchematicNumber(currentValue)
+		getSymbolIfPossible := func(cx, cy int) {
+			if symbol, err := s.GetSymbol(cx, cy); err == nil {
+				number.AdjacentSymbols[string(symbol)] = true
+			}
+		}
+		getSymbolIfPossible(x, y)                // symbol in front of number
+		getSymbolIfPossible(x-numberLength-1, y) // symbol behind number
+		for i := x - numberLength - 1; i <= x; i++ {
+			getSymbolIfPossible(i, y-1) // symbols in the row on top of number
+			getSymbolIfPossible(i, y+1) // symbols in the row under the bumber
+		}
+		return
+	}
 
 	for _, char := range s.Contents {
 		if digit, err := strconv.Atoi(string(char)); err == nil {
-			curValue = curValue*10 + digit
+			currentValue = currentValue*10 + digit
 			numberLength++
-		} else if curValue > 0 {
-			currentNumber := NewSchematicNumber(curValue)
-			getAdjacentSymbol := func(cx, cy int) {
-				if symbol, err := s.GetSymbol(cx, cy); err == nil {
-					currentNumber.AdjacentSymbols[string(symbol)] = true
-				}
-			}
-			getAdjacentSymbol(x, y)
-			getAdjacentSymbol(x-numberLength-1, y)
-			for i := x - numberLength - 1; i <= x; i++ {
-				getAdjacentSymbol(i, y-1)
-				getAdjacentSymbol(i, y+1)
-			}
+		} else if currentValue > 0 {
+			currentNumber := newSchematicNumberWithAdjacentSymbols()
 			numbers = append(numbers, currentNumber)
-			curValue = 0
+			currentValue = 0
 			numberLength = 0
 		}
 		incrementCoordinates(char)
