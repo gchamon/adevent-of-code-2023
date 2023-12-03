@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-var testInput = strings.TrimSpace(`
+var testInput = NewSchematic(strings.TrimSpace(`
 467..114..
 ...*......
 ..35..633.
@@ -16,7 +16,7 @@ var testInput = strings.TrimSpace(`
 ..592.....
 ......755.
 ...$.*....
-.664.598..`)
+.664.598..`))
 
 func TestGetSchematicNumbers(t *testing.T) {
 	expect := []SchematicNumber{
@@ -31,7 +31,7 @@ func TestGetSchematicNumbers(t *testing.T) {
 		{Value: 467},
 		{Value: 114},
 	}
-	result := getSchematicNumbers(testInput)
+	result := testInput.GetSchematicNumbers()
 	sortSchematicNumbers(&result)
 	sortSchematicNumbers(&expect)
 	if len(expect) != len(result) {
@@ -42,6 +42,13 @@ func TestGetSchematicNumbers(t *testing.T) {
 		if expect[i].Value != result[i].Value {
 			t.Errorf("expect %+v, got %+v", expect[i], result[i])
 		}
+	}
+}
+
+func TestGetSchematicDimentions(t *testing.T) {
+	expectDimensions := SchematicDimensions{Width: 10, Length: 10}
+	if !reflect.DeepEqual(expectDimensions, testInput.Dimensions) {
+		t.Errorf("expect %+v, got %+v", expectDimensions, testInput.Dimensions)
 	}
 }
 
@@ -116,7 +123,7 @@ func TestGetSchematicNumbersWithAdjacentSymbols(t *testing.T) {
 			},
 		},
 	}
-	result := getSchematicNumbers(testInput)
+	result := testInput.GetSchematicNumbers()
 	sortSchematicNumbers(&result)
 	sortSchematicNumbers(&expect)
 

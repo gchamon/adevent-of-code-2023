@@ -3,12 +3,33 @@ package main
 import (
 	"sort"
 	"strconv"
-	"strings"
 )
 
 type SchematicNumber struct {
 	Value           int
 	AdjacentSymbols map[rune]bool
+}
+
+type SchematicDimensions struct {
+	Width  int
+	Length int
+}
+
+type Schematic struct {
+	Contents   string
+	Dimensions SchematicDimensions
+}
+
+func NewSchematic(input string) (schematic Schematic) {
+	schematic.Contents = input
+	for i, c := range input {
+		if c == rune('\n') {
+			schematic.Dimensions.Width = i
+			schematic.Dimensions.Length = len(input) / schematic.Dimensions.Width
+			break
+		}
+	}
+	return
 }
 
 func sortSchematicNumbers(schematicNumbers *[]SchematicNumber) {
@@ -17,19 +38,15 @@ func sortSchematicNumbers(schematicNumbers *[]SchematicNumber) {
 	})
 }
 
-func getSchematicNumbers(input string) []SchematicNumber {
+func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 	numbers := []SchematicNumber{}
 	curValue := 0
-	for _, line := range strings.Split(input, "\n") {
-		for _, char := range line {
-			if digit, err := strconv.Atoi(string(char)); err == nil {
-				curValue = curValue*10 + digit
-			} else if curValue > 0 {
-				numbers = append(numbers, SchematicNumber{Value: curValue})
-				curValue = 0
-			}
-		}
-		if curValue > 0 {
+	numberLength := 0
+	for _, char := range s.Contents {
+		if digit, err := strconv.Atoi(string(char)); err == nil {
+			curValue = curValue*10 + digit
+			numberLength++
+		} else if curValue > 0 {
 			numbers = append(numbers, SchematicNumber{Value: curValue})
 			curValue = 0
 		}
