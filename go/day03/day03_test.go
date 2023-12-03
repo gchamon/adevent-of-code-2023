@@ -103,70 +103,70 @@ func TestGetSchematicNumbersWithAdjacentSymbols(t *testing.T) {
 	expect := []SchematicNumber{
 		{
 			Value: 35,
-			AdjacentSymbols: map[rune]bool{
-				'.': true,
-				'*': true,
+			AdjacentSymbols: map[string]bool{
+				".": true,
+				"*": true,
 			},
 		},
 		{
 			Value: 633,
-			AdjacentSymbols: map[rune]bool{
-				'.': true,
-				'#': true,
+			AdjacentSymbols: map[string]bool{
+				".": true,
+				"#": true,
 			},
 		},
 		{
 			Value: 617,
-			AdjacentSymbols: map[rune]bool{
-				'.': true,
-				'*': true,
+			AdjacentSymbols: map[string]bool{
+				".": true,
+				"*": true,
 			},
 		},
 		{
 			Value: 58,
-			AdjacentSymbols: map[rune]bool{
-				'.': true,
+			AdjacentSymbols: map[string]bool{
+				".": true,
 			},
 		},
 		{
 			Value: 592,
-			AdjacentSymbols: map[rune]bool{
-				'.': true,
-				'+': true,
+			AdjacentSymbols: map[string]bool{
+				".": true,
+				"+": true,
 			},
 		},
 		{
 			Value: 755,
-			AdjacentSymbols: map[rune]bool{
-				'.': true,
-				'*': true,
+			AdjacentSymbols: map[string]bool{
+				".": true,
+				"*": true,
 			},
 		},
 		{
 			Value: 664,
-			AdjacentSymbols: map[rune]bool{
-				'.': true,
-				'$': true,
+			AdjacentSymbols: map[string]bool{
+				".": true,
+				"$": true,
 			},
 		},
 		{
 			Value: 598,
-			AdjacentSymbols: map[rune]bool{
-				'.': true,
-				'*': true,
+			AdjacentSymbols: map[string]bool{
+				".": true,
+				"*": true,
 			},
 		},
 		{
 			Value: 467,
-			AdjacentSymbols: map[rune]bool{
-				'.': true,
-				'*': true,
+			AdjacentSymbols: map[string]bool{
+				".": true,
+				"*": true,
 			},
 		},
 		{
 			Value: 114,
-			AdjacentSymbols: map[rune]bool{
-				'.': true,
+			AdjacentSymbols: map[string]bool{
+				".": true,
 			},
 		},
 	}

@@ -2,13 +2,14 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"sort"
 	"strconv"
 )
 
 type SchematicNumber struct {
 	Value           int
-	AdjacentSymbols map[rune]bool
+	AdjacentSymbols map[string]bool
 }
 
 type SchematicDimensions struct {
@@ -67,17 +68,50 @@ func sortSchematicNumbers(schematicNumbers *[]SchematicNumber) {
 	})
 }
 
+func NewSchematicNumber(value int) (s SchematicNumber) {
+	s.Value = value
+	s.AdjacentSymbols = make(map[string]bool)
+	return
+}
+
 func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 	numbers := []SchematicNumber{}
 	curValue := 0
 	numberLength := 0
+	x, y := 0, 0
 	for _, char := range s.Contents {
 		if digit, err := strconv.Atoi(string(char)); err == nil {
 			curValue = curValue*10 + digit
 			numberLength++
 		} else if curValue > 0 {
-			numbers = append(numbers, SchematicNumber{Value: curValue})
+			currentNumber := NewSchematicNumber(curValue)
+			fmt.Println(curValue)
+			fmt.Println(numberLength)
+			fmt.Println(x, y)
+			if symbol, err := s.GetSymbol(x, y); err == nil {
+				currentNumber.AdjacentSymbols[string(symbol)] = true
+			}
+			if symbol, err := s.GetSymbol(x-numberLength-1, y); err == nil {
+				currentNumber.AdjacentSymbols[string(symbol)] = true
+			}
+			for i := x - numberLength - 1; i <= x; i++ {
+				if symbol, err := s.GetSymbol(i, y-1); err == nil {
+					fmt.Println(i, y-1)
+					currentNumber.AdjacentSymbols[string(symbol)] = true
+				}
+				if symbol, err := s.GetSymbol(i, y+1); err == nil {
+					fmt.Println(i, y+1)
+					currentNumber.AdjacentSymbols[string(symbol)] = true
+				}
+			}
+			numbers = append(numbers, currentNumber)
 			curValue = 0
+			numberLength = 0
+		}
+		if char == rune('\n') {
+			x, y = 0, y+1
+		} else {
+			x++
 		}
 	}
 	return numbers
