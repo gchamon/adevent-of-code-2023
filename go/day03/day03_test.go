@@ -1,6 +1,9 @@
 package main
 
 import (
+	"adventOfCode/utils"
+	"errors"
+	"fmt"
 	"reflect"
 	"strings"
 	"testing"
@@ -49,6 +52,50 @@ func TestGetSchematicDimentions(t *testing.T) {
 	expectDimensions := SchematicDimensions{Width: 10, Length: 10}
 	if !reflect.DeepEqual(expectDimensions, testInput.Dimensions) {
 		t.Errorf("expect %+v, got %+v", expectDimensions, testInput.Dimensions)
+	}
+}
+
+func TestGetSchematicSymbol(t *testing.T) {
+	type coordinates struct {
+		x int
+		y int
+	}
+	testCases := []utils.TestCase[coordinates, rune]{
+		{Case: coordinates{x: 3, y: 8}, Expected: '$'},
+		{Case: coordinates{x: 3, y: 1}, Expected: '*'},
+		{Case: coordinates{x: 5, y: 5}, Expected: '+'},
+		{Case: coordinates{x: 9, y: 9}, Expected: '.'},
+		{Case: coordinates{x: 8, y: 5}, Expected: '8'},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
+			result, err := testInput.GetSymbol(testCase.Case.x, testCase.Case.y)
+			if err != nil {
+				t.Errorf("wasn't expecting error %s", err)
+			}
+			if result != testCase.Expected {
+				t.Errorf("expected %v, got %v", testCase.Expected, result)
+			}
+		})
+	}
+
+	outOfBoundsCases := []coordinates{
+		{x: -1, y: -1},
+		{x: -1, y: 10},
+		{x: 10, y: -1},
+		{x: 10, y: 10},
+	}
+	for _, testCase := range outOfBoundsCases {
+		t.Run(fmt.Sprintf("out of bounds: %+v", testCase), func(t *testing.T) {
+			result, err := testInput.GetSymbol(testCase.x, testCase.y)
+			if err == nil {
+				t.Errorf("was expecting error %s", err)
+			}
+			if !errors.Is(err, ErrOutOfBounds) {
+				t.Errorf("expected %v, got %v", ErrOutOfBounds, result)
+			}
+		})
 	}
 }
 
