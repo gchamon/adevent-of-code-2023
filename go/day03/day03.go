@@ -77,36 +77,38 @@ func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 	numbers := []SchematicNumber{}
 	curValue := 0
 	numberLength := 0
+
 	x, y := 0, 0
+	incrementCoordinates := func(c rune) {
+		if c == rune('\n') {
+			x, y = 0, y+1
+		} else {
+			x++
+		}
+	}
+
 	for _, char := range s.Contents {
 		if digit, err := strconv.Atoi(string(char)); err == nil {
 			curValue = curValue*10 + digit
 			numberLength++
 		} else if curValue > 0 {
 			currentNumber := NewSchematicNumber(curValue)
-			if symbol, err := s.GetSymbol(x, y); err == nil {
-				currentNumber.AdjacentSymbols[string(symbol)] = true
+			getAdjacentSymbol := func(cx, cy int) {
+				if symbol, err := s.GetSymbol(cx, cy); err == nil {
+					currentNumber.AdjacentSymbols[string(symbol)] = true
+				}
 			}
-			if symbol, err := s.GetSymbol(x-numberLength-1, y); err == nil {
-				currentNumber.AdjacentSymbols[string(symbol)] = true
-			}
+			getAdjacentSymbol(x, y)
+			getAdjacentSymbol(x-numberLength-1, y)
 			for i := x - numberLength - 1; i <= x; i++ {
-				if symbol, err := s.GetSymbol(i, y-1); err == nil {
-					currentNumber.AdjacentSymbols[string(symbol)] = true
-				}
-				if symbol, err := s.GetSymbol(i, y+1); err == nil {
-					currentNumber.AdjacentSymbols[string(symbol)] = true
-				}
+				getAdjacentSymbol(i, y-1)
+				getAdjacentSymbol(i, y+1)
 			}
 			numbers = append(numbers, currentNumber)
 			curValue = 0
 			numberLength = 0
 		}
-		if char == rune('\n') {
-			x, y = 0, y+1
-		} else {
-			x++
-		}
+		incrementCoordinates(char)
 	}
 	return numbers
 }
