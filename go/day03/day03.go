@@ -13,10 +13,11 @@ func main() {
 	fmt.Println("first part:")
 	input := utils.Reader(2023, 03)
 	schematic := NewSchematic(input)
-	schematicNumbers := schematic.GetSchematicNumbers()
+	schematicNumbers, gearCandidates := schematic.GetSchematicNumbers()
 	partNumbersSum := sumPartNumbers(schematicNumbers)
 	fmt.Println(partNumbersSum)
-
+	fmt.Println("second part:")
+	fmt.Printf("%+v", gearCandidates)
 }
 
 type SchematicNumber struct {
@@ -86,7 +87,30 @@ func NewSchematicNumber(value int) (s SchematicNumber) {
 	return
 }
 
-func (s Schematic) GetSchematicNumbers() []SchematicNumber {
+type Coordinates struct {
+	x int
+	y int
+}
+
+type GearCandidate []int
+
+type GearCandidates map[Coordinates]GearCandidate
+
+func (g GearCandidate) IsGear() bool {
+	return len(g) == 2
+}
+
+func (g GearCandidate) GetRatio() (ratio int) {
+	ratio = 1
+
+	for _, value := range g {
+		ratio = ratio * value
+	}
+
+	return
+}
+
+func (s Schematic) GetSchematicNumbers() ([]SchematicNumber, GearCandidates) {
 	numbers := []SchematicNumber{}
 	currentValue := 0
 	numberLength := 0
@@ -102,11 +126,17 @@ func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 			x++
 		}
 	}
+
+	gearCandidates := GearCandidates{}
+
 	newSchematicNumberWithAdjacentSymbols := func() (number SchematicNumber) {
 		number = NewSchematicNumber(currentValue)
 		addSymbolIfPossible := func(cx, cy int) {
 			if symbol, err := s.GetSymbol(cx, cy); err == nil {
 				number.AdjacentSymbols[string(symbol)] = true
+				if symbol == rune('*') {
+					gearCandidates[Coordinates{x: cx, y: cy}] = append(gearCandidates[Coordinates{x: cx, y: cy}], currentValue)
+				}
 			}
 		}
 		addSymbolIfPossible(x, y)                // symbol in front of number
@@ -130,7 +160,7 @@ func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 		}
 		incrementCoordinates(char)
 	}
-	return numbers
+	return numbers, gearCandidates
 }
 
 func (n SchematicNumber) IsPartNumber() bool {
