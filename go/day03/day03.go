@@ -85,6 +85,7 @@ type Coordinates struct {
 	y int
 }
 
+// gear candidate is a list of potential part number values, which will later be used to calculate ratio
 type GearCandidate []int
 
 type GearCandidates map[Coordinates]GearCandidate
@@ -114,8 +115,7 @@ func (g GearCandidates) SumAllGearRatios() (sumRatios int) {
 
 func (s Schematic) GetSchematicParts() ([]SchematicNumber, GearCandidates) {
 	numbers := []SchematicNumber{}
-	currentValue := 0
-	numberLength := 0
+	gearCandidates := GearCandidates{}
 
 	// while the schematic contents is a single string, it is
 	// useful to maintain logical coordinates to symbols in order to
@@ -129,7 +129,8 @@ func (s Schematic) GetSchematicParts() ([]SchematicNumber, GearCandidates) {
 		}
 	}
 
-	gearCandidates := GearCandidates{}
+	currentValue := 0
+	numberLength := 0
 
 	newSchematicNumberWithAdjacentSymbols := func() (number SchematicNumber) {
 		number = NewSchematicNumber(currentValue)
