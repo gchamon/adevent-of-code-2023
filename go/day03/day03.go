@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"sort"
 	"strconv"
 )
@@ -85,9 +84,6 @@ func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 			numberLength++
 		} else if curValue > 0 {
 			currentNumber := NewSchematicNumber(curValue)
-			fmt.Println(curValue)
-			fmt.Println(numberLength)
-			fmt.Println(x, y)
 			if symbol, err := s.GetSymbol(x, y); err == nil {
 				currentNumber.AdjacentSymbols[string(symbol)] = true
 			}
@@ -96,11 +92,9 @@ func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 			}
 			for i := x - numberLength - 1; i <= x; i++ {
 				if symbol, err := s.GetSymbol(i, y-1); err == nil {
-					fmt.Println(i, y-1)
 					currentNumber.AdjacentSymbols[string(symbol)] = true
 				}
 				if symbol, err := s.GetSymbol(i, y+1); err == nil {
-					fmt.Println(i, y+1)
 					currentNumber.AdjacentSymbols[string(symbol)] = true
 				}
 			}
@@ -115,4 +109,13 @@ func (s Schematic) GetSchematicNumbers() []SchematicNumber {
 		}
 	}
 	return numbers
+}
+
+func (n SchematicNumber) IsPartNumber() bool {
+	for symbol := range n.AdjacentSymbols {
+		if symbol != "." {
+			return true
+		}
+	}
+	return false
 }

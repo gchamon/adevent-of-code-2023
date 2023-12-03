@@ -180,3 +180,66 @@ func TestGetSchematicNumbersWithAdjacentSymbols(t *testing.T) {
 		}
 	}
 }
+
+func TestIsPartNumber(t *testing.T) {
+	testCases := []utils.TestCase[SchematicNumber, bool]{
+		{
+			Case: SchematicNumber{
+				Value: 35,
+				AdjacentSymbols: map[string]bool{
+					".": true,
+					"*": true,
+				},
+			},
+			Expected: true,
+		},
+		{
+			Case: SchematicNumber{
+				Value: 633,
+				AdjacentSymbols: map[string]bool{
+					".": true,
+					"#": true,
+				},
+			},
+			Expected: true,
+		},
+		{
+			Case: SchematicNumber{
+				Value: 58,
+				AdjacentSymbols: map[string]bool{
+					".": true,
+				},
+			},
+			Expected: false,
+		},
+		{
+			Case: SchematicNumber{
+				Value: 592,
+				AdjacentSymbols: map[string]bool{
+					".": true,
+					"+": true,
+				},
+			},
+			Expected: true,
+		},
+		{
+			Case: SchematicNumber{
+				Value: 664,
+				AdjacentSymbols: map[string]bool{
+					".": true,
+					"$": true,
+				},
+			},
+			Expected: true,
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
+			result := testCase.Case.IsPartNumber()
+			if result != testCase.Expected {
+				t.Errorf("expect part number %v, got %v", testCase.Expected, result)
+			}
+		})
+	}
+}
