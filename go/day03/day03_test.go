@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -20,6 +21,12 @@ var testInput = NewSchematic(strings.TrimSpace(`
 ......755.
 ...$.*....
 .664.598..`))
+
+func sortSchematicNumbers(schematicNumbers *[]SchematicNumber) {
+	sort.SliceStable(*schematicNumbers, func(i, j int) bool {
+		return (*schematicNumbers)[i].Value < (*schematicNumbers)[j].Value
+	})
+}
 
 func TestGetSchematicNumbers(t *testing.T) {
 	expect := []SchematicNumber{

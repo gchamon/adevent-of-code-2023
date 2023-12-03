@@ -4,7 +4,6 @@ import (
 	"adventOfCode/utils"
 	"errors"
 	"fmt"
-	"sort"
 	"strconv"
 )
 
@@ -73,12 +72,6 @@ func (s Schematic) GetSymbol(x, y int) (r rune, e error) {
 		r, e = rune(s.Contents[symbolIndex]), nil
 	}
 	return
-}
-
-func sortSchematicNumbers(schematicNumbers *[]SchematicNumber) {
-	sort.SliceStable(*schematicNumbers, func(i, j int) bool {
-		return (*schematicNumbers)[i].Value < (*schematicNumbers)[j].Value
-	})
 }
 
 func NewSchematicNumber(value int) (s SchematicNumber) {
