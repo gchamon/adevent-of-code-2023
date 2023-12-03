@@ -2,8 +2,10 @@ package main
 
 import (
 	"adventOfCode/utils"
+	"errors"
 	"flag"
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -11,10 +13,14 @@ func main() {
 	flag.Parse()
 
 	for day := 1; day <= utils.GetAvailableDays(*year); day++ {
-		fmt.Printf("Downloading day %d...\n", day)
 		fileName := utils.GetInputFileName(*year, day)
-		aocInput := utils.GetAOCInput(*year, day)
-		utils.WriteToFile(aocInput, fileName)
+		if _, err := os.Stat(fileName); errors.Is(err, os.ErrNotExist) {
+			fmt.Printf("Downloading day %d...\n", day)
+			aocInput := utils.GetAOCInput(*year, day)
+			utils.WriteToFile(aocInput, fileName)
+		} else {
+			fmt.Printf("Input for day %d already exists. Skipping...\n", day)
+		}
 	}
-	fmt.Print("done")
+	fmt.Println("done")
 }
