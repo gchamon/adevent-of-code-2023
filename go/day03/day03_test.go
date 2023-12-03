@@ -256,14 +256,8 @@ func TestPartNumbersSum(t *testing.T) {
 
 func TestGearCandidates(t *testing.T) {
 	expectedSumGearRatios := 467835
-	sumGearRatios := 0
 	_, gearCandidates := testInput.GetSchematicNumbers()
-
-	for _, gearCandidate := range gearCandidates {
-		if gearCandidate.IsGear() {
-			sumGearRatios += gearCandidate.GetRatio()
-		}
-	}
+	sumGearRatios := gearCandidates.SumAllGearRatios()
 
 	if expectedSumGearRatios != sumGearRatios {
 		t.Errorf("expected %d, got %d", expectedSumGearRatios, sumGearRatios)

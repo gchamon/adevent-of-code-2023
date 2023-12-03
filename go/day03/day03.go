@@ -110,6 +110,15 @@ func (g GearCandidate) GetRatio() (ratio int) {
 	return
 }
 
+func (g GearCandidates) SumAllGearRatios() (sumRatios int) {
+	for _, gearCandidate := range g {
+		if gearCandidate.IsGear() {
+			sumRatios += gearCandidate.GetRatio()
+		}
+	}
+	return
+}
+
 func (s Schematic) GetSchematicNumbers() ([]SchematicNumber, GearCandidates) {
 	numbers := []SchematicNumber{}
 	currentValue := 0
