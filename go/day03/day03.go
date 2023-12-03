@@ -13,7 +13,7 @@ func main() {
 	fmt.Println("first part:")
 	input := utils.Reader(2023, 03)
 	schematic := NewSchematic(input)
-	schematicNumbers, gearCandidates := schematic.GetSchematicNumbers()
+	schematicNumbers, gearCandidates := schematic.GetSchematicParts()
 	partNumbersSum := sumPartNumbers(schematicNumbers)
 	fmt.Println(partNumbersSum)
 	fmt.Println("second part:")
@@ -119,7 +119,7 @@ func (g GearCandidates) SumAllGearRatios() (sumRatios int) {
 	return
 }
 
-func (s Schematic) GetSchematicNumbers() ([]SchematicNumber, GearCandidates) {
+func (s Schematic) GetSchematicParts() ([]SchematicNumber, GearCandidates) {
 	numbers := []SchematicNumber{}
 	currentValue := 0
 	numberLength := 0

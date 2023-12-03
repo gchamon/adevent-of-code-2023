@@ -34,7 +34,7 @@ func TestGetSchematicNumbers(t *testing.T) {
 		{Value: 467},
 		{Value: 114},
 	}
-	result, _ := testInput.GetSchematicNumbers()
+	result, _ := testInput.GetSchematicParts()
 	sortSchematicNumbers(&result)
 	sortSchematicNumbers(&expect)
 	if len(expect) != len(result) {
@@ -170,7 +170,7 @@ func TestGetSchematicNumbersWithAdjacentSymbols(t *testing.T) {
 			},
 		},
 	}
-	result, _ := testInput.GetSchematicNumbers()
+	result, _ := testInput.GetSchematicParts()
 	sortSchematicNumbers(&result)
 	sortSchematicNumbers(&expect)
 
@@ -246,7 +246,7 @@ func TestIsPartNumber(t *testing.T) {
 
 func TestPartNumbersSum(t *testing.T) {
 	expectedPartNumbersSum := 4361
-	numbers, _ := testInput.GetSchematicNumbers()
+	numbers, _ := testInput.GetSchematicParts()
 	partNumbersSum := sumPartNumbers(numbers)
 
 	if expectedPartNumbersSum != partNumbersSum {
@@ -256,7 +256,7 @@ func TestPartNumbersSum(t *testing.T) {
 
 func TestGearCandidates(t *testing.T) {
 	expectedSumGearRatios := 467835
-	_, gearCandidates := testInput.GetSchematicNumbers()
+	_, gearCandidates := testInput.GetSchematicParts()
 	sumGearRatios := gearCandidates.SumAllGearRatios()
 
 	if expectedSumGearRatios != sumGearRatios {
