@@ -1,6 +1,7 @@
 package main
 
 import (
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -39,6 +40,88 @@ func TestGetSchematicNumbers(t *testing.T) {
 
 	for i := 0; i < len(expect); i++ {
 		if expect[i].Value != result[i].Value {
+			t.Errorf("expect %+v, got %+v", expect[i], result[i])
+		}
+	}
+}
+
+func TestGetSchematicNumbersWithAdjacentSymbols(t *testing.T) {
+	expect := []SchematicNumber{
+		{
+			Value: 35,
+			AdjacentSymbols: map[rune]bool{
+				'.': true,
+				'*': true,
+			},
+		},
+		{
+			Value: 633,
+			AdjacentSymbols: map[rune]bool{
+				'.': true,
+				'#': true,
+			},
+		},
+		{
+			Value: 617,
+			AdjacentSymbols: map[rune]bool{
+				'.': true,
+				'*': true,
+			},
+		},
+		{
+			Value: 58,
+			AdjacentSymbols: map[rune]bool{
+				'.': true,
+			},
+		},
+		{
+			Value: 592,
+			AdjacentSymbols: map[rune]bool{
+				'.': true,
+				'+': true,
+			},
+		},
+		{
+			Value: 755,
+			AdjacentSymbols: map[rune]bool{
+				'.': true,
+				'*': true,
+			},
+		},
+		{
+			Value: 664,
+			AdjacentSymbols: map[rune]bool{
+				'.': true,
+				'$': true,
+			},
+		},
+		{
+			Value: 598,
+			AdjacentSymbols: map[rune]bool{
+				'.': true,
+				'*': true,
+			},
+		},
+		{
+			Value: 467,
+			AdjacentSymbols: map[rune]bool{
+				'.': true,
+				'*': true,
+			},
+		},
+		{
+			Value: 114,
+			AdjacentSymbols: map[rune]bool{
+				'.': true,
+			},
+		},
+	}
+	result := getSchematicNumbers(testInput)
+	sortSchematicNumbers(&result)
+	sortSchematicNumbers(&expect)
+
+	for i := 0; i < len(expect); i++ {
+		if !reflect.DeepEqual(expect[i].AdjacentSymbols, result[i].AdjacentSymbols) {
 			t.Errorf("expect %+v, got %+v", expect[i], result[i])
 		}
 	}
