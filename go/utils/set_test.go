@@ -42,3 +42,14 @@ func TestRemoveElements(t *testing.T) {
 		t.Errorf("should not have been able to remove %d again from %+v", 1, setInt)
 	}
 }
+
+func TestSetLen(t *testing.T) {
+	setInt := NewSet[int]()
+	intToAdd := []int{1, 2, 3}
+	for i, element := range intToAdd {
+		if setInt.Len() != i {
+			t.Errorf("length %d of set should have been %d", setInt.Len(), i)
+		}
+		setInt.Add(element)
+	}
+}
