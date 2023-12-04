@@ -73,16 +73,14 @@ func newScratchCard(input string) (scratchCard ScratchCard) {
 
 func sumTotalScratchCardCopies(scratchCards []ScratchCard) (totalCopies int) {
 	scratchCardCopies := make(map[int]int)
-	var lastScratchCard ScratchCard
 	for _, scratchCard := range scratchCards {
-		scratchCardCopies[scratchCard.ID]++
+		scratchCardCopies[scratchCard.ID]++ // add original card to the pile
 		winners := scratchCard.WinningNumbers.Intersection(scratchCard.CandidateNumbers)
-		for i := scratchCard.ID + 1; i <= scratchCard.ID+winners.Len(); i++ {
-			scratchCardCopies[i] += scratchCardCopies[scratchCard.ID]
+		for i := scratchCard.ID + 1; i <= scratchCard.ID+winners.Len(); i++ { // for all cards from ID +1 up to the number of winners
+			scratchCardCopies[i] += scratchCardCopies[scratchCard.ID] // add the number of copies of the current scratch card to the pile
 		}
-		lastScratchCard = scratchCard
 	}
-	for i := 1; i <= lastScratchCard.ID; i++ {
+	for i := 1; i <= scratchCards[len(scratchCards)-1].ID; i++ { // sum all scratch card copies up to the last possible ID (discards copies outside the table)
 		totalCopies += scratchCardCopies[i]
 	}
 	return
