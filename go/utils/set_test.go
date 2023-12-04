@@ -26,5 +26,19 @@ func TestAddSetElements(t *testing.T) {
 }
 
 func TestRemoveElements(t *testing.T) {
+	setInt := NewSet[int]()
+	intToRemove := []int{1, 2, 3}
+	setInt.Add(intToRemove...)
 
+	if ok := setInt.Remove(1); ok && setInt.Exists(1) {
+		t.Errorf("should have removed element %d from %+v", 1, setInt)
+	} else if ok != true {
+		t.Errorf("should have been able to remove %d from %+v", 1, setInt)
+	}
+	if !setInt.Exists(2) {
+		t.Errorf("should have kept element %d from %+v", 2, setInt)
+	}
+	if ok := setInt.Remove(1); ok {
+		t.Errorf("should not have been able to remove %d again from %+v", 1, setInt)
+	}
 }
