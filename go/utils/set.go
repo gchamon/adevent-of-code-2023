@@ -33,7 +33,11 @@ func (s *Set[T]) Remove(elements ...T) (ok bool) {
 }
 
 func (s *Set[T]) Exists(element T) bool {
-	return s.Map[element]
+	if result, ok := s.Map[element]; ok {
+		return result
+	} else {
+		return false
+	}
 }
 
 func (s *Set[T]) Len() int {
