@@ -23,7 +23,7 @@ func TestCardParseID(t *testing.T) {
 	}
 	for _, testCase := range testCases {
 		t.Run(testCase.Case, func(t *testing.T) {
-			result := NewScratchCard(testCase.Case)
+			result := newScratchCard(testCase.Case)
 			utils.AssertInt(t, result.ID, testCase.Expected)
 		})
 	}
@@ -81,7 +81,16 @@ func TestCardNumbers(t *testing.T) {
 		},
 	}
 	for _, testCase := range testCases {
-		result := NewScratchCard(testCase.Case)
+		result := newScratchCard(testCase.Case)
 		utils.AssertDeepEqual(t, result, testCase.Expected)
 	}
+}
+
+func TestTotalPoints(t *testing.T) {
+	expect := 13
+
+	scratchCards := getScratchCards(inputTest)
+	result := sumCardsPoints(scratchCards)
+
+	utils.AssertInt(t, result, expect)
 }
