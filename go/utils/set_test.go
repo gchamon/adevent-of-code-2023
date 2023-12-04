@@ -1,6 +1,9 @@
 package utils
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestAddSetElements(t *testing.T) {
 	intToAdd := []int{1, 2, 3}
@@ -51,5 +54,19 @@ func TestSetLen(t *testing.T) {
 			t.Errorf("length %d of set should have been %d", setInt.Len(), i)
 		}
 		setInt.Add(element)
+	}
+}
+
+func TestSetUnion(t *testing.T) {
+	setA := NewSet[int]()
+	setA.Add(1, 2, 3)
+	setB := NewSet[int]()
+	setB.Add(3, 4, 5)
+	setExpected := NewSet[int]()
+	setExpected.Add(1, 2, 3, 4, 5)
+
+	result := setA.Union(&setB)
+	if !reflect.DeepEqual(result, setExpected) {
+		t.Errorf("expected %+v, got %+v", setExpected, result)
 	}
 }

@@ -36,3 +36,13 @@ func (s *Set[T]) Exists(element T) bool {
 func (s *Set[T]) Len() int {
 	return len(s.Map)
 }
+
+func (s *Set[T]) Union(si ...*Set[T]) (u Set[T]) {
+	u = NewSet[T]()
+	for _, set := range append(si, s) {
+		for k, _ := range (*set).Map {
+			u.Add(k)
+		}
+	}
+	return
+}
