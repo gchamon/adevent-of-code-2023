@@ -29,9 +29,7 @@ func TestAddSetElements(t *testing.T) {
 }
 
 func TestRemoveElements(t *testing.T) {
-	setInt := NewSet[int]()
-	intToRemove := []int{1, 2, 3}
-	setInt.Add(intToRemove...)
+	setInt := NewSet[int](1, 2, 3)
 
 	if ok := setInt.Remove(1); ok && setInt.Exists(1) {
 		t.Errorf("should have removed element %d from %+v", 1, setInt)
@@ -58,15 +56,16 @@ func TestSetLen(t *testing.T) {
 }
 
 func TestSetUnion(t *testing.T) {
-	setA := NewSet[int]()
-	setA.Add(1, 2, 3)
-	setB := NewSet[int]()
-	setB.Add(3, 4, 5)
-	setExpected := NewSet[int]()
-	setExpected.Add(1, 2, 3, 4, 5)
+	setA := NewSet[int](1, 2, 3)
+	setB := NewSet[int](3, 4, 5)
+	setExpected := NewSet[int](1, 2, 3, 4, 5)
 
 	result := setA.Union(&setB)
 	if !reflect.DeepEqual(result, setExpected) {
 		t.Errorf("expected %+v, got %+v", setExpected, result)
 	}
+}
+
+func TestSetIntersect(t *testing.T) {
+
 }

@@ -4,8 +4,11 @@ type Set[T comparable] struct {
 	Map map[T]bool
 }
 
-func NewSet[T comparable]() (newSet Set[T]) {
+func NewSet[T comparable](elements ...T) (newSet Set[T]) {
 	newSet.Map = make(map[T]bool)
+	if len(elements) > 0 {
+		newSet.Add(elements...)
+	}
 	return
 }
 
