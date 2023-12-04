@@ -32,7 +32,7 @@ func (s *Set[T]) Remove(elements ...T) (ok bool) {
 	return
 }
 
-func (s *Set[T]) Exists(element T) bool {
+func (s Set[T]) Exists(element T) bool {
 	if result, ok := s.Map[element]; ok {
 		return result
 	} else {
@@ -40,7 +40,7 @@ func (s *Set[T]) Exists(element T) bool {
 	}
 }
 
-func (s *Set[T]) Len() int {
+func (s Set[T]) Len() int {
 	return len(s.Map)
 }
 
