@@ -40,12 +40,36 @@ func (s *Set[T]) Len() int {
 	return len(s.Map)
 }
 
-func (s *Set[T]) Union(si ...*Set[T]) (u Set[T]) {
+func (s Set[T]) Union(si ...Set[T]) (u Set[T]) {
 	u = NewSet[T]()
 	for _, set := range append(si, s) {
-		for k, _ := range (*set).Map {
+		for k := range set.Map {
 			u.Add(k)
 		}
 	}
 	return
+}
+
+func intersect[T comparable](s1 Set[T], s2 Set[T]) Set[T] {
+	i := NewSet[T]()
+	var smaller, larger Set[T]
+	if s1.Len() < s2.Len() {
+		smaller, larger = s1, s2
+	} else {
+		smaller, larger = s2, s1
+	}
+	for k := range smaller.Map {
+		if larger.Exists(k) {
+			i.Add(k)
+		}
+	}
+	return i
+}
+
+func (s Set[T]) Intersection(si ...Set[T]) Set[T] {
+	i := intersect(s, si[0])
+	for _, current := range si[1:] {
+		i = intersect(i, current)
+	}
+	return i
 }

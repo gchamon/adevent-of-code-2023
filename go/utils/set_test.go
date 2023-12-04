@@ -60,12 +60,24 @@ func TestSetUnion(t *testing.T) {
 	setB := NewSet[int](3, 4, 5)
 	setExpected := NewSet[int](1, 2, 3, 4, 5)
 
-	result := setA.Union(&setB)
+	result := setA.Union(setB)
 	if !reflect.DeepEqual(result, setExpected) {
 		t.Errorf("expected %+v, got %+v", setExpected, result)
 	}
 }
 
 func TestSetIntersect(t *testing.T) {
-
+	setA := NewSet[int](1, 2, 3)
+	setB := NewSet[int](1, 3, 5)
+	setC := NewSet[int](2, 3, 7)
+	setExpect := NewSet[int](3)
+	result := setA.Intersection(setB, setC)
+	if !reflect.DeepEqual(result, setExpect) {
+		t.Errorf("expected %+v, got %+v", setExpect, result)
+	}
+	setExpect = NewSet[int](1, 3)
+	result = setA.Intersection(setB)
+	if !reflect.DeepEqual(result, setExpect) {
+		t.Errorf("expected %+v, got %+v", setExpect, result)
+	}
 }
