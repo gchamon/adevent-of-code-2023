@@ -9,6 +9,18 @@ import (
 	"strings"
 )
 
+func main() {
+	fmt.Println("Day 4")
+	fmt.Println("first part:")
+	input := utils.Reader(2023, 04)
+	scratchCards := getScratchCards(strings.Split(input, "\n"))
+	totalPoints := sumCardsPoints(scratchCards)
+	fmt.Println(totalPoints)
+
+	fmt.Println("second part:")
+	fmt.Println(sumTotalScratchCardCopies(scratchCards))
+}
+
 type ScratchCard struct {
 	ID               int
 	WinningNumbers   utils.Set[int]
@@ -31,8 +43,8 @@ func parseNumbers(input string) (numbers utils.Set[int]) {
 	numbers = utils.NewSet[int]()
 
 	for _, maybeWinningNumberStr := range strings.Split(input, " ") {
-		if winningNumber, err := strconv.Atoi(maybeWinningNumberStr); err == nil {
-			numbers.Add(winningNumber)
+		if number, err := strconv.Atoi(maybeWinningNumberStr); err == nil {
+			numbers.Add(number)
 		}
 	}
 
@@ -50,12 +62,28 @@ func getScratchCards(input []string) (scratchCards []ScratchCard) {
 }
 
 func newScratchCard(input string) (scratchCard ScratchCard) {
-	pattern := regexp.MustCompile("Card (?P<id>\\d+): (?P<winning>[\\d\\s]+) \\| (?P<candidates>[\\d\\s]+)")
+	pattern := regexp.MustCompile("Card\\s+(?P<id>\\d+): (?P<winning>[\\d\\s]+) \\| (?P<candidates>[\\d\\s]+)")
 	match := pattern.FindStringSubmatch(input)
-	fmt.Printf("%+v\n", match)
 	id, _ := strconv.Atoi(match[pattern.SubexpIndex("id")])
 	scratchCard.ID = id
 	scratchCard.WinningNumbers = parseNumbers(match[pattern.SubexpIndex("winning")])
 	scratchCard.CandidateNumbers = parseNumbers(match[pattern.SubexpIndex("candidates")])
+	return
+}
+
+func sumTotalScratchCardCopies(scratchCards []ScratchCard) (totalCopies int) {
+	scratchCardCopies := make(map[int]int)
+	var lastScratchCard ScratchCard
+	for _, scratchCard := range scratchCards {
+		scratchCardCopies[scratchCard.ID]++
+		winners := scratchCard.WinningNumbers.Intersection(scratchCard.CandidateNumbers)
+		for i := scratchCard.ID + 1; i <= scratchCard.ID+winners.Len(); i++ {
+			scratchCardCopies[i] += scratchCardCopies[scratchCard.ID]
+		}
+		lastScratchCard = scratchCard
+	}
+	for i := 1; i <= lastScratchCard.ID; i++ {
+		totalCopies += scratchCardCopies[i]
+	}
 	return
 }

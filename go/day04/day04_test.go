@@ -94,3 +94,10 @@ func TestTotalPoints(t *testing.T) {
 
 	utils.AssertInt(t, result, expect)
 }
+
+func TestTotalScratchCards(t *testing.T) {
+	expect := 30
+	scratchCards := getScratchCards(inputTest)
+	result := sumTotalScratchCardCopies(scratchCards)
+	utils.AssertInt(t, result, expect)
+}
