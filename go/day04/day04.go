@@ -27,8 +27,12 @@ type ScratchCard struct {
 	CandidateNumbers utils.Set[int]
 }
 
+func (s ScratchCard) GetWinners() utils.Set[int] {
+	return s.WinningNumbers.Intersection(s.CandidateNumbers)
+}
+
 func (s ScratchCard) GetPoints() int {
-	winners := s.WinningNumbers.Intersection(s.CandidateNumbers)
+	winners := s.GetWinners()
 	return int(math.Pow(2, float64(winners.Len())-1))
 }
 
@@ -75,7 +79,7 @@ func sumTotalScratchCardCopies(scratchCards []ScratchCard) (totalCopies int) {
 	scratchCardCopies := make(map[int]int)
 	for _, scratchCard := range scratchCards {
 		scratchCardCopies[scratchCard.ID]++ // add original card to the pile
-		winners := scratchCard.WinningNumbers.Intersection(scratchCard.CandidateNumbers)
+		winners := scratchCard.GetWinners()
 		for i := scratchCard.ID + 1; i <= scratchCard.ID+winners.Len(); i++ { // for all cards from ID +1 up to the number of winners
 			scratchCardCopies[i] += scratchCardCopies[scratchCard.ID] // add the number of copies of the current scratch card to the pile
 		}
