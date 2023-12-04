@@ -17,7 +17,7 @@ func assertComparable[T comparable](t testing.TB, result, expect T, errorMessage
 	}
 }
 
-func assertDeepEqual[T any](t testing.TB, result, expect T) {
+func AssertDeepEqual[T any](t testing.TB, result, expect T) {
 	t.Helper()
 	if !reflect.DeepEqual(result, expect) {
 		t.Errorf("expect %+v, got %+v", expect, result)
