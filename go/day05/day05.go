@@ -21,6 +21,8 @@ func main() {
 	fmt.Println(lowestLocation)
 
 	fmt.Println("second part:")
+	lowestLocationRange := getLowestLocationRange(seeds, resourcesMaps)
+	fmt.Println(lowestLocationRange)
 }
 
 type Seeds []int
