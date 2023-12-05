@@ -241,8 +241,8 @@ func TestShallowMapTraversal(t *testing.T) {
 
 func TestFullTraversal(t *testing.T) {
 	inputTestSplit := splitInput(inputTest)
-	resourcesMaps := GetResourcesMaps(inputTestSplit[1:])
 	seeds := NewSeeds(inputTestSplit[0])
+	resourcesMaps := GetResourcesMaps(inputTestSplit[1:])
 	testCases := []utils.TestCase[int, int]{
 		{Case: seeds[0], Expected: 82},
 		{Case: seeds[1], Expected: 43},
@@ -253,4 +253,13 @@ func TestFullTraversal(t *testing.T) {
 		result := resourcesMaps.Traverse(testCase.Case)
 		utils.AssertInt(t, result, testCase.Expected)
 	}
+}
+
+func TestLowestLocation(t *testing.T) {
+	inputTestSplit := splitInput(inputTest)
+	seeds := NewSeeds(inputTestSplit[0])
+	resourcesMaps := GetResourcesMaps(inputTestSplit[1:])
+	expected := 35
+	result := getLowestLocation(seeds, resourcesMaps)
+	utils.AssertInt(t, result, expected)
 }

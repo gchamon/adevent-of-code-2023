@@ -17,13 +17,7 @@ func main() {
 	inputSplit := splitInput(input)
 	seeds := NewSeeds(inputSplit[0])
 	resourcesMaps := GetResourcesMaps(inputSplit[1:])
-	lowestLocation := int(math.Inf(1))
-	for _, seed := range seeds {
-		location := resourcesMaps.Traverse(seed)
-		if location < lowestLocation {
-			lowestLocation = location
-		}
-	}
+	lowestLocation := getLowestLocation(seeds, resourcesMaps)
 	fmt.Println(lowestLocation)
 
 	fmt.Println("second part:")
@@ -45,6 +39,18 @@ type ResourcesMap struct {
 }
 
 type ResourcesMaps []ResourcesMap
+
+func getLowestLocation(seeds Seeds, maps ResourcesMaps) (lowestLocation int) {
+	lowestLocationFloat := math.Inf(0)
+	for _, seed := range seeds {
+		location := float64(maps.Traverse(seed))
+		if location < lowestLocationFloat {
+			lowestLocationFloat = location
+		}
+		fmt.Println(lowestLocationFloat)
+	}
+	return int(lowestLocationFloat)
+}
 
 func (r *ResourcesMaps) Traverse(seed int) (location int) {
 	source := seed
