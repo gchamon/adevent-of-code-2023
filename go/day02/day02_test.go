@@ -3,7 +3,6 @@ package main
 import (
 	"adventOfCode/utils"
 	"fmt"
-	"reflect"
 	"testing"
 )
 
@@ -51,10 +50,7 @@ func TestGameStringParse(t *testing.T) {
 	}
 	for _, testCase := range testCases {
 		t.Run(testCase.Case, func(t *testing.T) {
-			result := parseGame(testCase.Case)
-			if !reflect.DeepEqual(result, testCase.Expected) {
-				t.Errorf("expected %+v, got %+v", testCase.Expected, result)
-			}
+			utils.AssertDeepEqual(t, parseGame(testCase.Case), testCase.Expected)
 		})
 	}
 }
@@ -74,17 +70,13 @@ func TestGamePossible(t *testing.T) {
 		t.Run(testCase.Case, func(t *testing.T) {
 			game := parseGame(testCase.Case)
 			result := game.IsPossible()
-			if result != testCase.Expected {
-				t.Errorf("expected %t, got %t", testCase.Expected, result)
-			}
+			utils.AssertBool(t, result, testCase.Expected)
 			if result == true {
 				sumPossibleIds += game.Id
 			}
 		})
 	}
-	if sumPossibleIds != expectedSumPossibleIds {
-		t.Errorf("expected sum %d, got %d", expectedSumPossibleIds, sumPossibleIds)
-	}
+	utils.AssertInt(t, expectedSumPossibleIds, sumPossibleIds)
 }
 
 func TestMinimumGamePossible(t *testing.T) {
@@ -122,11 +114,7 @@ func TestMinimumGamePossible(t *testing.T) {
 	}
 	for _, testCase := range testCases {
 		t.Run(testCase.Case, func(t *testing.T) {
-			game := parseGame(testCase.Case)
-			result := game.GetMinimumSubset()
-			if !reflect.DeepEqual(result, testCase.Expected) {
-				t.Errorf("expected %+v, got %+v", testCase.Expected, result)
-			}
+			utils.AssertDeepEqual(t, parseGame(testCase.Case).GetMinimumSubset(), testCase.Expected)
 		})
 	}
 }
@@ -169,13 +157,9 @@ func TestCalulatePower(t *testing.T) {
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
 			result := testCase.Case.CalculatePower()
-			if result != testCase.Expected {
-				t.Errorf("expected %d, got %d", testCase.Expected, result)
-			}
+			utils.AssertInt(t, result, testCase.Expected)
 			totalPowerSum += result
 		})
 	}
-	if totalPowerSum != expectedTotalPowerSum {
-		t.Errorf("expected total sum %d, got %d", expectedTotalPowerSum, totalPowerSum)
-	}
+	utils.AssertInt(t, totalPowerSum, expectedTotalPowerSum)
 }

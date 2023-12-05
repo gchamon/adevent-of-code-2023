@@ -74,10 +74,7 @@ func TestReplaceSubstringNumbers(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(testCase.Case, func(t *testing.T) {
-			result := replaceSubstringNumbers(testCase.Case)
-			if result != testCase.Expected {
-				t.Errorf("expected %s got %s", testCase.Expected, result)
-			}
+			utils.AssertString(t, replaceSubstringNumbers(testCase.Case), testCase.Expected)
 		})
 	}
 }
@@ -97,11 +94,9 @@ func TestCalibrationWithNumbersReplacement(t *testing.T) {
 	for _, testCase := range testCases {
 		t.Run(testCase.Case, func(t *testing.T) {
 			caseReplaced := replaceSubstringNumbers(testCase.Case)
-			if result, err := getCalibrationValue(caseReplaced); err != nil {
-				t.Errorf("got error %s", err)
-			} else if result != testCase.Expected {
-				t.Errorf("got %d expected %d", result, testCase.Expected)
-			}
+			result, err := getCalibrationValue(caseReplaced)
+			utils.AssertNotError(t, err)
+			utils.AssertInt(t, result, testCase.Expected)
 		})
 	}
 }

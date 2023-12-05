@@ -2,9 +2,7 @@ package main
 
 import (
 	"adventOfCode/utils"
-	"errors"
 	"fmt"
-	"reflect"
 	"sort"
 	"strings"
 	"testing"
@@ -44,9 +42,7 @@ func TestGetSchematicNumbers(t *testing.T) {
 	result, _ := testInput.GetSchematicParts()
 	sortSchematicNumbers(&result)
 	sortSchematicNumbers(&expect)
-	if len(expect) != len(result) {
-		t.Errorf("expected %d elements, got %d elements", len(expect), len(result))
-	}
+	utils.AssertInt(t, len(result), len(expect))
 
 	for i := 0; i < len(expect); i++ {
 		if expect[i].Value != result[i].Value {
@@ -57,9 +53,7 @@ func TestGetSchematicNumbers(t *testing.T) {
 
 func TestGetSchematicDimentions(t *testing.T) {
 	expectDimensions := SchematicDimensions{Width: 10, Length: 10}
-	if !reflect.DeepEqual(expectDimensions, testInput.Dimensions) {
-		t.Errorf("expect %+v, got %+v", expectDimensions, testInput.Dimensions)
-	}
+	utils.AssertDeepEqual(t, testInput.Dimensions, expectDimensions)
 }
 
 func TestGetSchematicSymbol(t *testing.T) {
@@ -78,12 +72,8 @@ func TestGetSchematicSymbol(t *testing.T) {
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
 			result, err := testInput.GetSymbol(testCase.Case.x, testCase.Case.y)
-			if err != nil {
-				t.Errorf("wasn't expecting error %s", err)
-			}
-			if result != testCase.Expected {
-				t.Errorf("expected %v, got %v", testCase.Expected, result)
-			}
+			utils.AssertNotError(t, err)
+			utils.AssertRune(t, result, testCase.Expected)
 		})
 	}
 
@@ -95,13 +85,8 @@ func TestGetSchematicSymbol(t *testing.T) {
 	}
 	for _, testCase := range outOfBoundsCases {
 		t.Run(fmt.Sprintf("out of bounds: %+v", testCase), func(t *testing.T) {
-			result, err := testInput.GetSymbol(testCase.x, testCase.y)
-			if err == nil {
-				t.Errorf("was expecting error %s", err)
-			}
-			if !errors.Is(err, ErrOutOfBounds) {
-				t.Errorf("expected %v, got %v", ErrOutOfBounds, result)
-			}
+			_, err := testInput.GetSymbol(testCase.x, testCase.y)
+			utils.AssertExpectError(t, err, ErrOutOfBounds)
 		})
 	}
 }
@@ -182,9 +167,7 @@ func TestGetSchematicNumbersWithAdjacentSymbols(t *testing.T) {
 	sortSchematicNumbers(&expect)
 
 	for i := 0; i < len(expect); i++ {
-		if !reflect.DeepEqual(expect[i].AdjacentSymbols, result[i].AdjacentSymbols) {
-			t.Errorf("expect %+v, got %+v", expect[i], result[i])
-		}
+		utils.AssertDeepEqual(t, result[i].AdjacentSymbols, expect[i].AdjacentSymbols)
 	}
 }
 
@@ -243,10 +226,7 @@ func TestIsPartNumber(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
-			result := testCase.Case.IsPartNumber()
-			if result != testCase.Expected {
-				t.Errorf("expect part number %v, got %v", testCase.Expected, result)
-			}
+			utils.AssertBool(t, testCase.Case.IsPartNumber(), testCase.Expected)
 		})
 	}
 }
@@ -255,18 +235,12 @@ func TestPartNumbersSum(t *testing.T) {
 	expectedPartNumbersSum := 4361
 	numbers, _ := testInput.GetSchematicParts()
 	partNumbersSum := sumPartNumbers(numbers)
-
-	if expectedPartNumbersSum != partNumbersSum {
-		t.Errorf("expected %d, got %d", expectedPartNumbersSum, partNumbersSum)
-	}
+	utils.AssertInt(t, partNumbersSum, expectedPartNumbersSum)
 }
 
 func TestGearCandidates(t *testing.T) {
 	expectedSumGearRatios := 467835
 	_, gearCandidates := testInput.GetSchematicParts()
 	sumGearRatios := gearCandidates.SumAllGearRatios()
-
-	if expectedSumGearRatios != sumGearRatios {
-		t.Errorf("expected %d, got %d", expectedSumGearRatios, sumGearRatios)
-	}
+	utils.AssertInt(t, sumGearRatios, expectedSumGearRatios)
 }

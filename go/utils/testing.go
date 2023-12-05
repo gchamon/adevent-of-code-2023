@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"reflect"
 	"testing"
 )
@@ -29,12 +30,31 @@ func AssertInt(t testing.TB, result, expect int) {
 	assertComparable(t, result, expect, "expected %d, got %d")
 }
 
-func AssertString(t testing.TB, result, expect string) {
+func AssertRune(t testing.TB, result, expect rune) {
 	t.Helper()
-	assertComparable(t, result, expect, "expected %s, got %s")
+	assertComparable(t, string(result), string(expect), "expected rune('%s'), got rune('%s')")
 }
 
-func AssertBool(t testing.TB, result, expect string) {
+func AssertString(t testing.TB, result, expect string) {
 	t.Helper()
-	assertComparable(t, result, expect, "expected %v, got %v")
+	assertComparable(t, result, expect, "expected '%s', got '%s'")
+}
+
+func AssertBool(t testing.TB, result, expect bool) {
+	t.Helper()
+	assertComparable(t, result, expect, "expected %t, got %t")
+}
+
+func AssertExpectError(t testing.TB, result, expect error) {
+	t.Helper()
+	if !errors.Is(result, expect) {
+		t.Errorf("expected error '%v', got '%v'", expect, result)
+	}
+}
+
+func AssertNotError(t testing.TB, result error) {
+	t.Helper()
+	if result != nil {
+		t.Errorf("got error when was not expecting one: %s", result)
+	}
 }
