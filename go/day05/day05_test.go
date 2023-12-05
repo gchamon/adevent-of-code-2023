@@ -214,3 +214,29 @@ func TestGetResourcesMap(t *testing.T) {
 		utils.AssertDeepEqual(t, result, testCase.Expected)
 	}
 }
+
+func TestShallowMapTraversal(t *testing.T) {
+	inputs := GetResourcesMaps(splitInput(inputTest)[1:])
+	type TestCase struct {
+		resourceMap ResourcesMap
+		sources     []int
+	}
+	testCases := []utils.TestCase[TestCase, []int]{
+		{
+			Case: TestCase{
+				resourceMap: inputs[0],
+				sources:     []int{98, 51, 2},
+			},
+			Expected: []int{50, 53, 2},
+		},
+	}
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprint(testCase.Case), func(t *testing.T) {
+			results := []int{}
+			for _, source := range testCase.Case.sources {
+				results = append(results, testCase.Case.resourceMap.GetDestination(source))
+			}
+			utils.AssertDeepEqual(t, results, testCase.Expected)
+		})
+	}
+}

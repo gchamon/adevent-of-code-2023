@@ -17,6 +17,21 @@ type ResourcesMap struct {
 	Map  SrcDestMap
 }
 
+func (r *ResourcesMap) GetDestination(source int) int {
+	if destination, ok := r.Map[source]; ok {
+		return destination
+	} else {
+		return source
+	}
+}
+
+func GetResourcesMaps(inputs []string) (resourcesMap []ResourcesMap) {
+	for _, input := range inputs {
+		resourcesMap = append(resourcesMap, NewResourcesMap(input))
+	}
+	return
+}
+
 func NewResourcesMap(input string) ResourcesMap {
 	mapInputs := strings.Split(input, "\n")
 	labelPattern := regexp.MustCompile("(?P<source>\\w+)-to-(?P<destination>\\w+) map:")
