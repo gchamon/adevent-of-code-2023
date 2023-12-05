@@ -23,6 +23,8 @@ func NewResourcesMap(input string) ResourcesMap {
 	match := labelPattern.FindStringSubmatch(mapInputs[0])
 
 	newMap := NewMap()
+	AddAllToMap(newMap, mapInputs[1:])
+
 	resourcesMap := ResourcesMap{
 		From: match[labelPattern.SubexpIndex("source")],
 		To:   match[labelPattern.SubexpIndex("destination")],
@@ -42,9 +44,10 @@ func (m *SrcDestMap) AddToMap(dest, src, rng int) {
 	}
 }
 
-func AddAllToMap(srcDestMap *SrcDestMap, ranges [][3]int) *SrcDestMap {
+func AddAllToMap(srcDestMap *SrcDestMap, ranges []string) *SrcDestMap {
 	for _, rng := range ranges {
-		destination, source, rangMax := rng[0], rng[1], rng[2]
+		rngInt := parseIntList(rng)
+		destination, source, rangMax := rngInt[0], rngInt[1], rngInt[2]
 		srcDestMap.AddToMap(destination, source, rangMax)
 	}
 	return srcDestMap
@@ -64,6 +67,8 @@ func NewSeeds(input string) (seeds Seeds, err error) {
 	return
 }
 
+// takes a string which is a list of integers separated by spaces and returns the corresponding array of ints
+// "1 2 3" -> []int{1,2,3}
 func parseIntList(input string) (output []int) {
 	maybeInts := strings.Split(input, " ")
 	for _, maybeInt := range maybeInts {

@@ -51,10 +51,10 @@ func TestGetSeeds(t *testing.T) {
 }
 
 func TestMakeMap(t *testing.T) {
-	testCases := []utils.TestCase[[][3]int, map[int]int]{
+	testCases := []utils.TestCase[[]string, map[int]int]{
 		{
-			Case: [][3]int{
-				{50, 98, 2},
+			Case: []string{
+				"50 98 2",
 			},
 			Expected: map[int]int{
 				98: 50,
@@ -62,8 +62,8 @@ func TestMakeMap(t *testing.T) {
 			},
 		},
 		{
-			Case: [][3]int{
-				{42, 0, 7},
+			Case: []string{
+				"42 0 7",
 			},
 			Expected: map[int]int{
 				0: 42,
@@ -76,9 +76,9 @@ func TestMakeMap(t *testing.T) {
 			},
 		},
 		{
-			Case: [][3]int{
-				{50, 98, 2},
-				{42, 0, 7},
+			Case: []string{
+				"50 98 2",
+				"42 0 7",
 			},
 			Expected: map[int]int{
 				0:  42,
@@ -112,9 +112,9 @@ func TestGetResourcesMap(t *testing.T) {
 				To:   "soil",
 				Map: *AddAllToMap(
 					NewMap(),
-					[][3]int{
-						{50, 98, 2},
-						{52, 50, 48},
+					[]string{
+						"50 98 2",
+						"52 50 48",
 					},
 				),
 			},
