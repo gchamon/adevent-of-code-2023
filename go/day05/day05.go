@@ -19,12 +19,22 @@ type ResourcesMap struct {
 
 var NewSeedsValidationError = errors.New("invalid input")
 
-func MakeMap(dest, src, rng int) (resMap SrcDestMap) {
-	resMap = make(SrcDestMap, rng)
-	for i := 0; i < rng; i++ {
-		resMap[src+i] = dest + i
-	}
+func NewMap() (m SrcDestMap) {
+	m = make(SrcDestMap)
 	return
+}
+
+func (m *SrcDestMap) AddToMap(dest, src, rng int) {
+	for i := 0; i < rng; i++ {
+		(*m)[src+i] = dest + i
+	}
+}
+
+func AddAllToMap(srcDestMap *SrcDestMap, ranges [][3]int) {
+	for _, rng := range ranges {
+		destination, source, rangMax := rng[0], rng[1], rng[2]
+		srcDestMap.AddToMap(destination, source, rangMax)
+	}
 }
 
 func NewSeeds(input string) (seeds Seeds, err error) {

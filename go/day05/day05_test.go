@@ -51,16 +51,20 @@ func TestGetSeeds(t *testing.T) {
 }
 
 func TestMakeMap(t *testing.T) {
-	testCases := []utils.TestCase[[]int, map[int]int]{
+	testCases := []utils.TestCase[[][3]int, map[int]int]{
 		{
-			Case: []int{50, 98, 2},
+			Case: [][3]int{
+				{50, 98, 2},
+			},
 			Expected: map[int]int{
 				98: 50,
 				99: 51,
 			},
 		},
 		{
-			Case: []int{42, 0, 7},
+			Case: [][3]int{
+				{42, 0, 7},
+			},
 			Expected: map[int]int{
 				0: 42,
 				1: 43,
@@ -71,11 +75,29 @@ func TestMakeMap(t *testing.T) {
 				6: 48,
 			},
 		},
+		{
+			Case: [][3]int{
+				{50, 98, 2},
+				{42, 0, 7},
+			},
+			Expected: map[int]int{
+				0:  42,
+				1:  43,
+				2:  44,
+				3:  45,
+				4:  46,
+				5:  47,
+				6:  48,
+				98: 50,
+				99: 51,
+			},
+		},
 	}
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
-			destination, source, mapRange := testCase.Case[0], testCase.Case[1], testCase.Case[2]
-			utils.AssertDeepEqual(t, MakeMap(destination, source, mapRange), testCase.Expected)
+			srcDestMap := NewMap()
+			AddAllToMap(&srcDestMap, testCase.Case)
+			utils.AssertDeepEqual(t, srcDestMap, testCase.Expected)
 		})
 	}
 }
