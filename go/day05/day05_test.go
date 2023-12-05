@@ -2,6 +2,7 @@ package main
 
 import (
 	"adventOfCode/utils"
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -48,3 +49,47 @@ func TestGetSeeds(t *testing.T) {
 	utils.AssertNotError(t, err)
 	utils.AssertDeepEqual(t, seeds, expect)
 }
+
+func TestMakeMap(t *testing.T) {
+	testCases := []utils.TestCase[[]int, map[int]int]{
+		{
+			Case: []int{50, 98, 2},
+			Expected: map[int]int{
+				98: 50,
+				99: 51,
+			},
+		},
+		{
+			Case: []int{42, 0, 7},
+			Expected: map[int]int{
+				0: 42,
+				1: 43,
+				2: 44,
+				3: 45,
+				4: 46,
+				5: 47,
+				6: 48,
+			},
+		},
+	}
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
+			destination, source, mapRange := testCase.Case[0], testCase.Case[1], testCase.Case[2]
+			utils.AssertDeepEqual(t, MakeMap(destination, source, mapRange), testCase.Expected)
+		})
+	}
+}
+
+// func TestGetResourcesMap(t *testing.T) {
+// 	inputTestSplit := splitInput(inputTest)[1:]
+// 	testCases := []utils.TestCase[string, ResourcesMap]{
+// 		{
+// 			Case: inputTestSplit[0],
+// 			Expected: ResourcesMap{
+// 				From: "seed",
+// 				To: "soil",
+// 				Map:
+// 			}
+// 		}
+// 	}
+// }
