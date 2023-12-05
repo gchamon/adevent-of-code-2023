@@ -58,8 +58,15 @@ func (r *ResourcesMaps) Traverse(seed int) (location int) {
 	return
 }
 
-func (r *ResourcesMap) GetDestination(source int) int {
-	return 0
+func (r *ResourcesMap) GetDestination(source int) (destination int) {
+	for _, srcDest := range r.Map {
+		if source >= srcDest.Source && source < srcDest.Source+srcDest.Range {
+			destination = srcDest.Destination + (source - srcDest.Source)
+			return
+		}
+	}
+	destination = source
+	return
 }
 
 func GetResourcesMaps(inputs []string) (resourcesMaps ResourcesMaps) {
