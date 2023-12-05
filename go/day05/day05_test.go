@@ -50,28 +50,13 @@ func TestGetSeeds(t *testing.T) {
 }
 
 func TestMakeMap(t *testing.T) {
-	testCases := []utils.TestCase[[]string, map[int]int]{
+	testCases := []utils.TestCase[[]string, SrcDestMap]{
 		{
 			Case: []string{
 				"50 98 2",
 			},
-			Expected: map[int]int{
-				98: 50,
-				99: 51,
-			},
-		},
-		{
-			Case: []string{
-				"42 0 7",
-			},
-			Expected: map[int]int{
-				0: 42,
-				1: 43,
-				2: 44,
-				3: 45,
-				4: 46,
-				5: 47,
-				6: 48,
+			Expected: SrcDestMap{
+				{50, 98, 2},
 			},
 		},
 		{
@@ -79,16 +64,9 @@ func TestMakeMap(t *testing.T) {
 				"50 98 2",
 				"42 0 7",
 			},
-			Expected: map[int]int{
-				0:  42,
-				1:  43,
-				2:  44,
-				3:  45,
-				4:  46,
-				5:  47,
-				6:  48,
-				98: 50,
-				99: 51,
+			Expected: SrcDestMap{
+				{50, 98, 2},
+				{42, 0, 7},
 			},
 		},
 	}

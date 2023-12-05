@@ -1,17 +1,43 @@
 package main
 
 import (
+	"adventOfCode/utils"
 	"errors"
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
+func main() {
+	fmt.Println("Day 5")
+	fmt.Println("first part:")
+	input := utils.Reader(2023, 05)
+	inputSplit := splitInput(input)
+	seeds := NewSeeds(inputSplit[0])
+	resourcesMaps := GetResourcesMaps(inputSplit[1:])
+	lowestLocation := int(math.Inf(1))
+	for _, seed := range seeds {
+		location := resourcesMaps.Traverse(seed)
+		if location < lowestLocation {
+			lowestLocation = location
+		}
+	}
+	fmt.Println(lowestLocation)
+
+	fmt.Println("second part:")
+}
+
 type Seeds []int
 
-type SrcDestMap map[int]int
+type SrcDest struct {
+	Destination int
+	Source      int
+	Range       int
+}
 
+type SrcDestMap []SrcDest
 type ResourcesMap struct {
 	From string
 	To   string
@@ -33,11 +59,7 @@ func (r *ResourcesMaps) Traverse(seed int) (location int) {
 }
 
 func (r *ResourcesMap) GetDestination(source int) int {
-	if destination, ok := r.Map[source]; ok {
-		return destination
-	} else {
-		return source
-	}
+	return 0
 }
 
 func GetResourcesMaps(inputs []string) (resourcesMaps ResourcesMaps) {
@@ -64,21 +86,15 @@ func NewResourcesMap(input string) ResourcesMap {
 }
 
 func NewMap() *SrcDestMap {
-	m := make(SrcDestMap)
+	m := SrcDestMap{}
 	return &m
-}
-
-func (m *SrcDestMap) AddToMap(dest, src, rng int) {
-	for i := 0; i < rng; i++ {
-		(*m)[src+i] = dest + i
-	}
 }
 
 func AddAllToMap(srcDestMap *SrcDestMap, ranges []string) *SrcDestMap {
 	for _, rng := range ranges {
 		rngInt := parseIntList(rng)
 		destination, source, rangMax := rngInt[0], rngInt[1], rngInt[2]
-		srcDestMap.AddToMap(destination, source, rangMax)
+		(*srcDestMap) = append((*srcDestMap), SrcDest{destination, source, rangMax})
 	}
 	return srcDestMap
 }
