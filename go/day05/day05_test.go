@@ -119,6 +119,94 @@ func TestGetResourcesMap(t *testing.T) {
 				),
 			},
 		},
+		{
+			Case: inputTestSplit[1],
+			Expected: ResourcesMap{
+				From: "soil",
+				To:   "fertilizer",
+				Map: *AddAllToMap(
+					NewMap(),
+					[]string{
+						"0 15 37",
+						"37 52 2",
+						"39 0 15",
+					},
+				),
+			},
+		},
+		{
+			Case: inputTestSplit[2],
+			Expected: ResourcesMap{
+				From: "fertilizer",
+				To:   "water",
+				Map: *AddAllToMap(
+					NewMap(),
+					[]string{
+						"49 53 8",
+						"0 11 42",
+						"42 0 7",
+						"57 7 4",
+					},
+				),
+			},
+		},
+		{
+			Case: inputTestSplit[3],
+			Expected: ResourcesMap{
+				From: "water",
+				To:   "light",
+				Map: *AddAllToMap(
+					NewMap(),
+					[]string{
+						"88 18 7",
+						"18 25 70",
+					},
+				),
+			},
+		},
+		{
+			Case: inputTestSplit[4],
+			Expected: ResourcesMap{
+				From: "light",
+				To:   "temperature",
+				Map: *AddAllToMap(
+					NewMap(),
+					[]string{
+						"45 77 23",
+						"81 45 19",
+						"68 64 13",
+					},
+				),
+			},
+		},
+		{
+			Case: inputTestSplit[5],
+			Expected: ResourcesMap{
+				From: "temperature",
+				To:   "humidity",
+				Map: *AddAllToMap(
+					NewMap(),
+					[]string{
+						"0 69 1",
+						"1 0 69",
+					},
+				),
+			},
+		},
+		{
+			Case: inputTestSplit[6],
+			Expected: ResourcesMap{
+				From: "humidity",
+				To:   "location",
+				Map: *AddAllToMap(
+					NewMap(),
+					[]string{
+						"60 56 37",
+						"56 93 4",
+					},
+				),
+			},
+		},
 	}
 
 	for _, testCase := range testCases {
