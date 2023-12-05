@@ -96,22 +96,33 @@ func TestMakeMap(t *testing.T) {
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
 			srcDestMap := NewMap()
-			AddAllToMap(&srcDestMap, testCase.Case)
-			utils.AssertDeepEqual(t, srcDestMap, testCase.Expected)
+			AddAllToMap(srcDestMap, testCase.Case)
+			utils.AssertDeepEqual(t, *srcDestMap, testCase.Expected)
 		})
 	}
 }
 
-// func TestGetResourcesMap(t *testing.T) {
-// 	inputTestSplit := splitInput(inputTest)[1:]
-// 	testCases := []utils.TestCase[string, ResourcesMap]{
-// 		{
-// 			Case: inputTestSplit[0],
-// 			Expected: ResourcesMap{
-// 				From: "seed",
-// 				To: "soil",
-// 				Map:
-// 			}
-// 		}
-// 	}
-// }
+func TestGetResourcesMap(t *testing.T) {
+	inputTestSplit := splitInput(inputTest)[1:]
+	testCases := []utils.TestCase[string, ResourcesMap]{
+		{
+			Case: inputTestSplit[0],
+			Expected: ResourcesMap{
+				From: "seed",
+				To:   "soil",
+				Map: *AddAllToMap(
+					NewMap(),
+					[][3]int{
+						{50, 98, 2},
+						{52, 50, 48},
+					},
+				),
+			},
+		},
+	}
+
+	for _, testCase := range testCases {
+		result := NewResourcesMap(testCase.Case)
+		utils.AssertDeepEqual(t, result, testCase.Expected)
+	}
+}

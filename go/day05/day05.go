@@ -17,11 +17,23 @@ type ResourcesMap struct {
 	Map  SrcDestMap
 }
 
-var NewSeedsValidationError = errors.New("invalid input")
+func NewResourcesMap(input string) ResourcesMap {
+	mapInputs := strings.Split(input, "\n")
+	labelPattern := regexp.MustCompile("(?P<source>\\w+)-to-(?P<destination>\\w+) map:")
+	match := labelPattern.FindStringSubmatch(mapInputs[0])
 
-func NewMap() (m SrcDestMap) {
-	m = make(SrcDestMap)
-	return
+	newMap := NewMap()
+	resourcesMap := ResourcesMap{
+		From: match[labelPattern.SubexpIndex("source")],
+		To:   match[labelPattern.SubexpIndex("destination")],
+		Map:  *newMap,
+	}
+	return resourcesMap
+}
+
+func NewMap() *SrcDestMap {
+	m := make(SrcDestMap)
+	return &m
 }
 
 func (m *SrcDestMap) AddToMap(dest, src, rng int) {
@@ -30,12 +42,15 @@ func (m *SrcDestMap) AddToMap(dest, src, rng int) {
 	}
 }
 
-func AddAllToMap(srcDestMap *SrcDestMap, ranges [][3]int) {
+func AddAllToMap(srcDestMap *SrcDestMap, ranges [][3]int) *SrcDestMap {
 	for _, rng := range ranges {
 		destination, source, rangMax := rng[0], rng[1], rng[2]
 		srcDestMap.AddToMap(destination, source, rangMax)
 	}
+	return srcDestMap
 }
+
+var NewSeedsValidationError = errors.New("invalid input")
 
 func NewSeeds(input string) (seeds Seeds, err error) {
 	pattern := regexp.MustCompile("seeds: ([\\d\\s]+)")
@@ -43,12 +58,17 @@ func NewSeeds(input string) (seeds Seeds, err error) {
 		seeds = Seeds{}
 		err = NewSeedsValidationError
 	} else {
-		maybeSeeds := strings.Split(match[1], " ")
+		seeds = parseIntList(match[1])
 		err = nil
-		for _, maybeSeed := range maybeSeeds {
-			if seed, err := strconv.Atoi(maybeSeed); err == nil {
-				seeds = append(seeds, seed)
-			}
+	}
+	return
+}
+
+func parseIntList(input string) (output []int) {
+	maybeInts := strings.Split(input, " ")
+	for _, maybeInt := range maybeInts {
+		if intToAdd, err := strconv.Atoi(maybeInt); err == nil {
+			output = append(output, intToAdd)
 		}
 	}
 	return
