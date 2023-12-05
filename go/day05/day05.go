@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -17,6 +18,20 @@ type ResourcesMap struct {
 	Map  SrcDestMap
 }
 
+type ResourcesMaps []ResourcesMap
+
+func (r *ResourcesMaps) Traverse(seed int) (location int) {
+	source := seed
+	for _, resourcesMap := range *r {
+		destination := resourcesMap.GetDestination(source)
+		fmt.Println(resourcesMap.From, source, resourcesMap.To, destination)
+		source = destination
+	}
+	fmt.Println("")
+	location = source
+	return
+}
+
 func (r *ResourcesMap) GetDestination(source int) int {
 	if destination, ok := r.Map[source]; ok {
 		return destination
@@ -25,9 +40,9 @@ func (r *ResourcesMap) GetDestination(source int) int {
 	}
 }
 
-func GetResourcesMaps(inputs []string) (resourcesMap []ResourcesMap) {
+func GetResourcesMaps(inputs []string) (resourcesMaps ResourcesMaps) {
 	for _, input := range inputs {
-		resourcesMap = append(resourcesMap, NewResourcesMap(input))
+		resourcesMaps = append(resourcesMaps, NewResourcesMap(input))
 	}
 	return
 }
@@ -70,15 +85,10 @@ func AddAllToMap(srcDestMap *SrcDestMap, ranges []string) *SrcDestMap {
 
 var NewSeedsValidationError = errors.New("invalid input")
 
-func NewSeeds(input string) (seeds Seeds, err error) {
+func NewSeeds(input string) (seeds Seeds) {
 	pattern := regexp.MustCompile("seeds: ([\\d\\s]+)")
-	if match := pattern.FindStringSubmatch(input); len(match) == 0 {
-		seeds = Seeds{}
-		err = NewSeedsValidationError
-	} else {
-		seeds = parseIntList(match[1])
-		err = nil
-	}
+	match := pattern.FindStringSubmatch(input)
+	seeds = parseIntList(match[1])
 	return
 }
 

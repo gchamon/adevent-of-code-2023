@@ -44,9 +44,8 @@ humidity-to-location map:
 `)
 
 func TestGetSeeds(t *testing.T) {
-	seeds, err := NewSeeds(splitInput(inputTest)[0])
+	seeds := NewSeeds(splitInput(inputTest)[0])
 	expect := Seeds{79, 14, 55, 13}
-	utils.AssertNotError(t, err)
 	utils.AssertDeepEqual(t, seeds, expect)
 }
 
@@ -229,6 +228,27 @@ func TestShallowMapTraversal(t *testing.T) {
 			},
 			Expected: []int{50, 53, 2},
 		},
+		{
+			Case: TestCase{
+				resourceMap: inputs[1],
+				sources:     []int{16, 53, 14, 55},
+			},
+			Expected: []int{1, 38, 53, 55},
+		},
+		{
+			Case: TestCase{
+				resourceMap: inputs[2],
+				sources:     []int{54, 12, 0, 8, 61},
+			},
+			Expected: []int{50, 1, 42, 58, 61},
+		},
+		{
+			Case: TestCase{
+				resourceMap: inputs[3],
+				sources:     []int{24, 94, 2},
+			},
+			Expected: []int{94, 87, 2},
+		},
 	}
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprint(testCase.Case), func(t *testing.T) {
@@ -238,5 +258,21 @@ func TestShallowMapTraversal(t *testing.T) {
 			}
 			utils.AssertDeepEqual(t, results, testCase.Expected)
 		})
+	}
+}
+
+func TestFullTraversal(t *testing.T) {
+	inputTestSplit := splitInput(inputTest)
+	resourcesMaps := GetResourcesMaps(inputTestSplit[1:])
+	seeds := NewSeeds(inputTestSplit[0])
+	testCases := []utils.TestCase[int, int]{
+		{Case: seeds[0], Expected: 82},
+		{Case: seeds[1], Expected: 43},
+		{Case: seeds[2], Expected: 86},
+		{Case: seeds[3], Expected: 35},
+	}
+	for _, testCase := range testCases {
+		result := resourcesMaps.Traverse(testCase.Case)
+		utils.AssertInt(t, result, testCase.Expected)
 	}
 }
