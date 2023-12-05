@@ -263,3 +263,12 @@ func TestLowestLocation(t *testing.T) {
 	result := getLowestLocation(seeds, resourcesMaps)
 	utils.AssertInt(t, result, expected)
 }
+
+func TestLowestLocationRange(t *testing.T) {
+	inputTestSplit := splitInput(inputTest)
+	seeds := NewSeeds(inputTestSplit[0])
+	resourcesMaps := GetResourcesMaps(inputTestSplit[1:])
+	expected := 46
+	result := getLowestLocationRange(seeds, resourcesMaps)
+	utils.AssertInt(t, result, expected)
+}

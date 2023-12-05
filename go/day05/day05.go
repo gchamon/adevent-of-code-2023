@@ -40,6 +40,21 @@ type ResourcesMap struct {
 
 type ResourcesMaps []ResourcesMap
 
+func getLowestLocationRange(seeds Seeds, maps ResourcesMaps) (lowestLocation int) {
+	lowestLocationFloat := math.Inf(0)
+	for i := 0; i < len(seeds)/2; i++ {
+		seedStart := seeds[i*2]
+		seedRange := seeds[i*2+1]
+		for seed := seedStart; seed < seedStart+seedRange; seed++ {
+			location := float64(maps.Traverse(seed))
+			if location < lowestLocationFloat {
+				lowestLocationFloat = location
+			}
+		}
+	}
+	return int(lowestLocationFloat)
+}
+
 func getLowestLocation(seeds Seeds, maps ResourcesMaps) (lowestLocation int) {
 	lowestLocationFloat := math.Inf(0)
 	for _, seed := range seeds {
@@ -47,7 +62,6 @@ func getLowestLocation(seeds Seeds, maps ResourcesMaps) (lowestLocation int) {
 		if location < lowestLocationFloat {
 			lowestLocationFloat = location
 		}
-		fmt.Println(lowestLocationFloat)
 	}
 	return int(lowestLocationFloat)
 }
@@ -56,10 +70,8 @@ func (r *ResourcesMaps) Traverse(seed int) (location int) {
 	source := seed
 	for _, resourcesMap := range *r {
 		destination := resourcesMap.GetDestination(source)
-		fmt.Println(resourcesMap.From, source, resourcesMap.To, destination)
 		source = destination
 	}
-	fmt.Println("")
 	location = source
 	return
 }
