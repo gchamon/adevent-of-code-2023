@@ -36,3 +36,9 @@ func TestGetWaysToWin(t *testing.T) {
 		})
 	}
 }
+
+func TestGetWaysToWinSingleRace(t *testing.T) {
+	expect := 71503
+	result := parseInput(strings.ReplaceAll(inputTest, " ", ""))[0].GetWaysToWin()
+	utils.AssertInt(t, result, expect)
+}

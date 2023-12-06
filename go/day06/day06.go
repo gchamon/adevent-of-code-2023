@@ -7,6 +7,21 @@ import (
 	"strings"
 )
 
+func main() {
+	fmt.Println("Day 6")
+	fmt.Println("first part:")
+	input := utils.Reader(2023, 06)
+	races := parseInput(input)
+	result := 1
+	for _, race := range races {
+		result = result * race.GetWaysToWin()
+	}
+	fmt.Println(result)
+	fmt.Println("second part:")
+	race := parseInput(strings.ReplaceAll(input, " ", ""))[0]
+	fmt.Println(race.GetWaysToWin())
+}
+
 type Race struct {
 	Time     int
 	Distance int
@@ -25,22 +40,12 @@ type Race struct {
 // X2 = (T + √(T²-4S))/2
 // total ways to win are the integest between the bounds of X1 and X2
 func (r Race) GetWaysToWin() int {
-	fmt.Printf("%+v\n", r)
 	getBound := func(c float64) float64 {
 		return (float64(r.Time) + c*math.Sqrt(math.Pow(float64(r.Time), 2)-4*float64(r.Distance))) / 2
 	}
-	getBoundInt := func(bound float64, round func(float64) float64, c int) int {
-		boundRound := round(bound)
-		if bound == boundRound {
-			return int(bound) + c
-		} else {
-			return int(boundRound)
-		}
-	}
 	timeLowerBound := getBound(-1)
 	timeUpperBound := getBound(+1)
-	fmt.Println(timeUpperBound, timeLowerBound)
-	return getBoundInt(timeUpperBound, math.Floor, -1) - getBoundInt(timeLowerBound, math.Ceil, 1) + 1
+	return int(math.Ceil(timeUpperBound) - math.Floor(timeLowerBound) - 1)
 }
 
 func parseInput(input string) []Race {
