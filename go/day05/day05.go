@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"math"
 	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -119,7 +118,7 @@ func NewMap() *SrcDestMap {
 
 func AddAllToMap(srcDestMap *SrcDestMap, ranges []string) *SrcDestMap {
 	for _, rng := range ranges {
-		rngInt := parseIntList(rng)
+		rngInt := utils.ParseIntList(rng)
 		destination, source, rangMax := rngInt[0], rngInt[1], rngInt[2]
 		(*srcDestMap) = append((*srcDestMap), SrcDest{destination, source, rangMax})
 	}
@@ -131,19 +130,7 @@ var NewSeedsValidationError = errors.New("invalid input")
 func NewSeeds(input string) (seeds Seeds) {
 	pattern := regexp.MustCompile("seeds: ([\\d\\s]+)")
 	match := pattern.FindStringSubmatch(input)
-	seeds = parseIntList(match[1])
-	return
-}
-
-// takes a string which is a list of integers separated by spaces and returns the corresponding array of ints
-// "1 2 3" -> []int{1,2,3}
-func parseIntList(input string) (output []int) {
-	maybeInts := strings.Split(input, " ")
-	for _, maybeInt := range maybeInts {
-		if intToAdd, err := strconv.Atoi(maybeInt); err == nil {
-			output = append(output, intToAdd)
-		}
-	}
+	seeds = utils.ParseIntList(match[1])
 	return
 }
 
