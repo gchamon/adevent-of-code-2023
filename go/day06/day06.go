@@ -12,6 +12,18 @@ type Race struct {
 	Distance int
 }
 
+// this leverages a second degree inequality equation that rises from the problem
+// for every time X spent pressing the button, the resulting speed increases to x mm/ms
+// the remaining time it is propelled, covering a total distance in time Y = T - X
+// where T is total time
+// total distance is Speed * Time = X*Y = S
+// Total time is X + Y = T
+// X*Y > S in order to win
+// X*(T - X) > S
+// -X² +XT -S > 0
+// X1 = (T - √(T²-4S))/2
+// X2 = (T + √(T²-4S))/2
+// total ways to win are the integest between the bounds of X1 and X2
 func (r Race) GetWaysToWin() int {
 	fmt.Printf("%+v\n", r)
 	getBound := func(c float64) float64 {
