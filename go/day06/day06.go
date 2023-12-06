@@ -10,6 +10,10 @@ type Race struct {
 	Distance int
 }
 
+func (r Race) GetWaysToWin() int {
+	return 0
+}
+
 func parseInput(input string) []Race {
 	timesAndDistancesString := strings.Split(input, "\n")
 	times := utils.ParseIntList(strings.Split(timesAndDistancesString[0], ":")[1])

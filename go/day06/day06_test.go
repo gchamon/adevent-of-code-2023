@@ -2,6 +2,7 @@ package main
 
 import (
 	"adventOfCode/utils"
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -21,8 +22,17 @@ func TestParseInput(t *testing.T) {
 	utils.AssertDeepEqual(t, result, expected)
 }
 
-// func TestGetWaysToWin(t *testing.T) {
-// 	testCase := []utils.TestCase[[2]int, int]{
-
-// 	}
-// }
+func TestGetWaysToWin(t *testing.T) {
+	races := parseInput(inputTest)
+	testCases := []utils.TestCase[Race, int]{
+		{Case: races[0], Expected: 4},
+		{Case: races[1], Expected: 8},
+		{Case: races[2], Expected: 9},
+	}
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprintf("%+v", testCase.Case), func(t *testing.T) {
+			result := testCase.Case.GetWaysToWin()
+			utils.AssertInt(t, result, testCase.Expected)
+		})
+	}
+}
