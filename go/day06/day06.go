@@ -38,7 +38,7 @@ type Race struct {
 // -X² +XT -S > 0
 // X1 = (T - √(T²-4S))/2
 // X2 = (T + √(T²-4S))/2
-// total ways to win are the integest between the bounds of X1 and X2
+// total ways to win are the integers between the bounds of X1 and X2
 func (r Race) GetWaysToWin() int {
 	getBound := func(c float64) float64 {
 		return (float64(r.Time) + c*math.Sqrt(math.Pow(float64(r.Time), 2)-4*float64(r.Distance))) / 2
