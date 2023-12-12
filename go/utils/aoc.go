@@ -15,6 +15,11 @@ import (
 
 func GetAOCInput(year, day int) []byte {
 	aocCookie := os.Getenv("AOC_SESSION_COOKIE")
+
+	if aocCookie == "" {
+		panic("AOC_SESSION_COOKIE not set")
+	}
+
 	aocUrl := fmt.Sprintf("https://adventofcode.com/%d/day/%d/input", year, day)
 	req, err := http.NewRequest("GET", aocUrl, nil)
 	if err != nil {
